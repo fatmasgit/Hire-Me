@@ -1,14 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  GoogleAuthProvider, signInWithPopup
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  linkWithPopup,
+  signOut,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { auth, db } from "../../Firebase/firebaseConfig";
 import { supabase } from '../../SuperBase/SuperBaseConfig';
 
-
-// Async thunk to handle user signup
 export const signupUser = createAsyncThunk(
   'employersSignUp/signupUser',
   async ({ name, email, profession, password, profileImage }, { rejectWithValue }) => {
@@ -16,40 +18,34 @@ export const signupUser = createAsyncThunk(
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
-      // Process the profile photo
-      let imageUrl = null;
-      if (profileImage) {
-        const fileExt = profileImage.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-        const filePath = `Employers-images/${fileName}`;
-
-        const { error: imageUploadError } = await supabase.storage
-          .from('Employers')
-          .upload(filePath, profileImage, { cacheControl: '3600', upsert: false });
-
-        if (imageUploadError) {
-          throw new Error(`Image upload failed: ${imageUploadError.message}`);
+      const provider = new GoogleAuthProvider();
+      try {
+        await linkWithPopup(userCredential.user, provider);
+      } catch (error) {
+        if (
+          error.code !== 'auth/popup-closed-by-user' &&
+          error.code !== 'auth/provider-already-linked'
+        ) {
+          throw new Error('Google linking failed: ' + error.message);
         }
-
-        const { data: publicUrlData, error: imageUrlError } = supabase.storage
-          .from('Employers')
-          .getPublicUrl(filePath);
-
-        if (imageUrlError) {
-          throw new Error(`Failed to get image URL: ${imageUrlError.message}`);
-        }
-
-        imageUrl = publicUrlData.publicUrl;
       }
 
-      // Save user data to Firestore
+      let imageUrl = null;
+      if (profileImage) {
+        const ext = profileImage.name.split('.').pop();
+        const filePath = `Employers-images/${Date.now()}.${ext}`;
+        const { error } = await supabase.storage.from('Employers').upload(filePath, profileImage, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+        if (error) throw new Error(`Image upload failed: ${error.message}`);
+        const { data } = supabase.storage.from('Employers').getPublicUrl(filePath);
+        imageUrl = data.publicUrl;
+      }
+
       const employersDoc = doc(db, 'employers', uid);
-      await setDoc(employersDoc, {
-        name,
-        email,
-        profession,
-        imageUrl,
-      });
+      await setDoc(employersDoc, { name, email, profession, imageUrl });
 
       return {
         uid,
@@ -57,7 +53,7 @@ export const signupUser = createAsyncThunk(
         email,
         profession,
         imageUrl,
-        role: 'employer',
+        role: 'employer'
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -65,8 +61,6 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-
-// Async thunk to handle user login
 export const loginUser = createAsyncThunk(
   'employersSignUp/loginUser',
   async ({ email, password }, { rejectWithValue }) => {
@@ -77,24 +71,23 @@ export const loginUser = createAsyncThunk(
       const employersDoc = doc(db, 'employers', uid);
       const docSnap = await getDoc(employersDoc);
 
-      if (docSnap.exists()) {
-        return {
-          uid,
-          role: 'employer',
-          message: 'Login successful!',
-          ...docSnap.data()
-        };
-      } else {
-        throw new Error('No such user!');
+      if (!docSnap.exists()) {
+        await signOut(auth);
+        throw new Error('No employer profile found for this email.');
       }
+
+      return {
+        uid,
+        role: 'employer',
+        message: 'Login successful!',
+        ...docSnap.data()
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-
-// sign in with google
 export const loginWithGoogle = createAsyncThunk(
   'employersSignUp/loginWithGoogle',
   async (_, { rejectWithValue }) => {
@@ -103,12 +96,19 @@ export const loginWithGoogle = createAsyncThunk(
       const userCredential = await signInWithPopup(auth, provider);
       const { uid, email, displayName } = userCredential.user;
 
+      const docSnap = await getDoc(doc(db, 'employers', uid));
+      if (!docSnap.exists()) {
+        await signOut(auth);
+        throw new Error('No employer profile found for this Google account.');
+      }
+
       return {
         uid,
         email,
         displayName,
         role: 'employer',
         message: 'Login successful!',
+        ...docSnap.data()
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -116,71 +116,69 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
-
-// Async thunk to add a job to Firestore
 export const addJobToFirestore = createAsyncThunk(
   'employersSignUp/addJobToFirestore',
-  async ({ jobTitle, workMode, companyName, minSalary, maxSalary, jobCountry, jobCity,
-    employmentType, salaryCurrency, jobDescription, jobRequirements, jobImage
-  }, { rejectWithValue }) => {
+  async (
+    {
+      jobTitle,
+      workMode,
+      companyName,
+      minSalary,
+      maxSalary,
+      jobCountry,
+      jobCity,
+      employmentType,
+      salaryCurrency,
+      jobDescription,
+      jobRequirements,
+      jobImage
+    },
+    { rejectWithValue }
+  ) => {
     const currentUser = auth.currentUser;
+    if (!currentUser) return rejectWithValue('No user is authenticated');
+    const { uid } = currentUser;
 
-    if (currentUser) {
-      const { uid } = currentUser;
+    try {
       let jobImageUrl = null;
 
-      try {
-        if (jobImage) {
-          const fileExt = jobImage.name.split('.').pop();
-          const fileName = `${Date.now()}.${fileExt}`;
-          const filePath = `Job-images/${fileName}`;
+      if (jobImage) {
+        const ext = jobImage.name.split('.').pop();
+        const filePath = `Job-images/${Date.now()}.${ext}`;
+        const { error } = await supabase.storage.from('Employers').upload(filePath, jobImage, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-          const { error: imageUploadError } = await supabase.storage
-            .from('Employers')
-            .upload(filePath, jobImage, { cacheControl: '3600', upsert: false });
-
-          if (imageUploadError) {
-            throw new Error(`Image upload failed: ${imageUploadError.message}`);
-          }
-
-          const { data: publicUrlData, error: imageUrlError } = supabase.storage
-            .from('Employers')
-            .getPublicUrl(filePath);
-
-          if (imageUrlError) {
-            throw new Error(`Failed to get image URL: ${imageUrlError.message}`);
-          }
-
-          jobImageUrl = publicUrlData.publicUrl;
-        }
-
-        const jobRef = collection(db, 'jobs');
-        const newJob = {
-          employerId: uid,
-          jobTitle: jobTitle.toLowerCase(),
-          workMode: workMode.toLowerCase(),
-          jobType: employmentType.toLowerCase(),
-          companyName: companyName.toLowerCase(),
-          jobLocation: { country: jobCountry.toLowerCase(), city: jobCity.toLowerCase() },
-          salaryRange: { min: minSalary, max: maxSalary },
-          jobDescription,
-          jobRequirements,
-          companyImage: jobImageUrl,
-          salaryCurrency: salaryCurrency.toLowerCase()
-        };
-
-        await addDoc(jobRef, newJob);
-      } catch (error) {
-        return rejectWithValue(error.message);
+        if (error) throw new Error(`Image upload failed: ${error.message}`);
+        const { data } = supabase.storage.from('Employers').getPublicUrl(filePath);
+        jobImageUrl = data.publicUrl;
       }
-    } else {
-      return rejectWithValue('No user is authenticated');
+
+      const newJob = {
+        employerId: uid,
+        jobTitle: jobTitle.toLowerCase(),
+        workMode: workMode.toLowerCase(),
+        jobType: employmentType.toLowerCase(),
+        companyName: companyName.toLowerCase(),
+        jobLocation: {
+          country: jobCountry.toLowerCase(),
+          city: jobCity.toLowerCase()
+        },
+        salaryRange: { min: minSalary, max: maxSalary },
+        jobDescription,
+        jobRequirements,
+        companyImage: jobImageUrl,
+        salaryCurrency: salaryCurrency.toLowerCase()
+      };
+
+      await addDoc(collection(db, 'jobs'), newJob);
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );
 
-
-// Redux slice
 const employersSignUpSlice = createSlice({
   name: 'employersSignUp',
   initialState: {
@@ -192,7 +190,7 @@ const employersSignUpSlice = createSlice({
     message: null,
     loading: null,
     jobLoading: false,
-    jobError: null,
+    jobError: null
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -253,7 +251,7 @@ const employersSignUpSlice = createSlice({
         state.jobLoading = false;
         state.jobError = action.payload;
       });
-  },
+  }
 });
 
 export default employersSignUpSlice.reducer;

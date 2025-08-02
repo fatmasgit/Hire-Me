@@ -1,98 +1,66 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  GoogleAuthProvider, signInWithPopup
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  linkWithPopup,
+  signOut
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { supabase } from '../../SuperBase/SuperBaseConfig';
 import { auth, db } from '../../Firebase/firebaseConfig';
 
-
-// Async thunk to handle candidate signup with image and CV upload
+// Signup with Google account linking
 export const signupCandidate = createAsyncThunk(
   'candidatesSignUp/signupCandidate',
   async ({
-    firstName,
-    lastName,
-    email,
-    password,
-    dateOfBirth,
-    university,
-    major,
-    educationLevel,
-    graduationYear,
-    profilePhoto,
-    cv
+    firstName, lastName, email, password,
+    dateOfBirth, university, major, educationLevel,
+    graduationYear, profilePhoto, cv
   }, { rejectWithValue }) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
-      // Image upload to Supabase Storage
+      // 🔗 Attempt to link Google account
+      const provider = new GoogleAuthProvider();
+      try {
+        await linkWithPopup(userCredential.user, provider);
+      } catch (error) {
+        if (
+          error.code !== 'auth/popup-closed-by-user' &&
+          error.code !== 'auth/provider-already-linked'
+        ) {
+          throw new Error('Google linking failed: ' + error.message);
+        }
+      }
+
+      // Upload profile photo
       let imageUrl = null;
       if (profilePhoto) {
-        const fileExt = profilePhoto.name.split('.').pop();
-        const fileName = `${uid}.${fileExt}`;
-        const filePath = `candidate-images/${fileName}`;
-
-        const { error: imageUploadError } = await supabase.storage
-          .from('Candidate')
-          .upload(filePath, profilePhoto, { cacheControl: '3600', upsert: false });
-
-        if (imageUploadError) {
-          throw new Error(`Image upload failed: ${imageUploadError.message}`);
-        }
-
-        const { data: publicUrlData, error: imageUrlError } = supabase.storage
-          .from('Candidate')
-          .getPublicUrl(filePath);
-
-        if (imageUrlError) {
-          throw new Error(`Failed to get image URL: ${imageUrlError.message}`);
-        }
-
-        imageUrl = publicUrlData.publicUrl;
+        const ext = profilePhoto.name.split('.').pop();
+        const filePath = `candidate-images/${uid}.${ext}`;
+        await supabase.storage.from('Candidate').upload(filePath, profilePhoto, { upsert: false });
+        const { data } = supabase.storage.from('Candidate').getPublicUrl(filePath);
+        imageUrl = data.publicUrl;
       }
 
-      // CV upload to Supabase Storage
+      // Upload CV
       let cvUrl = null;
       if (cv) {
-        const fileExt = cv.name.split('.').pop();
-        const fileName = `${uid}-cv.${fileExt}`;
-        const filePath = `candidate-cvs/${fileName}`;
-
-        const { error: cvUploadError } = await supabase.storage
-          .from('Candidate')
-          .upload(filePath, cv, { cacheControl: '3600', upsert: false });
-
-        if (cvUploadError) {
-          throw new Error(`CV upload failed: ${cvUploadError.message}`);
-        }
-
-        const { data: cvUrlData, error: cvUrlError } = supabase.storage
-          .from('Candidate')
-          .getPublicUrl(filePath);
-
-        if (cvUrlError) {
-          throw new Error(`Failed to get CV URL: ${cvUrlError.message}`);
-        }
-
-        cvUrl = cvUrlData.publicUrl;
+        const ext = cv.name.split('.').pop();
+        const filePath = `candidate-cvs/${uid}-cv.${ext}`;
+        await supabase.storage.from('Candidate').upload(filePath, cv, { upsert: false });
+        const { data } = supabase.storage.from('Candidate').getPublicUrl(filePath);
+        cvUrl = data.publicUrl;
       }
 
-      // Save candidate details in Firestore
+      // Save Firestore document
       const candidatesDoc = doc(db, 'candidates', uid);
       await setDoc(candidatesDoc, {
-        firstName,
-        lastName,
-        email,
-        dateOfBirth,
-        university,
-        major,
-        educationLevel,
-        graduationYear,
-        imageUrl,
-        cvUrl,
+        firstName, lastName, email, dateOfBirth, university,
+        major, educationLevel, graduationYear, imageUrl, cvUrl,
         createdAt: new Date().toISOString(),
       });
 
@@ -114,8 +82,7 @@ export const signupCandidate = createAsyncThunk(
   }
 );
 
-
-// login thunk function
+// login with email/password
 export const loginCandidate = createAsyncThunk(
   'candidatesSignUp/loginCandidate',
   async ({ email, password }, { rejectWithValue }) => {
@@ -123,48 +90,17 @@ export const loginCandidate = createAsyncThunk(
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
-      // fetch user data from firestore after login
-      const candidatesDoc = doc(db, 'candidates', uid);
-      const docSnap = await getDoc(candidatesDoc);
-
-      if (docSnap.exists()) {
-        return {
-          uid,
-          role: 'candidate',
-          message: 'Login successful!',
-          ...docSnap.data()
-        };
-      } else {
-        throw new Error('No such user found!');
+      const docSnap = await getDoc(doc(db, 'candidates', uid));
+      if (!docSnap.exists()) {
+        await signOut(auth);
+        throw new Error('No candidate profile found for this email.');
       }
-    } catch (error) {
-      if (error.code === 'auth/user-not-found') {
-        return rejectWithValue('User not found!');
-      } else if (error.code === 'auth/wrong-password') {
-        return rejectWithValue('Incorrect password!');
-      } else {
-        return rejectWithValue(error.message);
-      }
-    }
-  }
-);
-
-
-// sign in with google
-export const loginWithGoogle = createAsyncThunk(
-  'candidatesSignUp/loginWithGoogle',
-  async (_, { rejectWithValue }) => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const userCredential = await signInWithPopup(auth, provider);
-      const { uid, email, displayName } = userCredential.user;
 
       return {
         uid,
-        email,
-        displayName,
         role: 'candidate',
-        message: 'Login successful!'
+        message: 'Login successful!',
+        ...docSnap.data()
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -172,8 +108,35 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
+// login with Google (only if Firestore profile exists)
+export const loginWithGoogle = createAsyncThunk(
+  'candidatesSignUp/loginWithGoogle',
+  async (_, { rejectWithValue }) => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      const { uid, email } = userCredential.user;
 
-// Redux slice for candidate 
+      const docSnap = await getDoc(doc(db, 'candidates', uid));
+      if (!docSnap.exists()) {
+        await signOut(auth);
+        throw new Error('No candidate profile found for this Google account.');
+      }
+
+      return {
+        uid,
+        email,
+        role: 'candidate',
+        message: 'Login successful!',
+        ...docSnap.data()
+      };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Slice
 const candidatesSignUpSlice = createSlice({
   name: 'candidatesSignUp',
   initialState: {
