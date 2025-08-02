@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'antd';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import profile from './profile.svg';
 
 export default function UserData() {
-  const { t } = useTranslation(); // Use the translation hook
+  const { t } = useTranslation();
   const { role, userDocument, displayName } = useSelector((state) => state.auth);
 
   const candidateItems = [
@@ -60,10 +60,10 @@ export default function UserData() {
     },
   ];
 
-  const items = role === 'candidate' ? candidateItems : employerItems || '';
+  const items = role === 'candidate' ? candidateItems : employerItems;
   const img = userDocument?.imageUrl || profile;
-  const name = role === 'candidate' ? userDocument?.firstName : userDocument?.name || '';
-  const googleDisplayName = displayName;
+  const name = role === 'candidate' ? userDocument?.firstName : userDocument?.name;
+  const fallbackName = displayName;
 
   return (
     <div className="flex max-w-[12rem] h-[2.3rem] items-center gap-x-1 mx-2">
@@ -71,36 +71,32 @@ export default function UserData() {
         <img
           className="w-[2.3rem] h-full rounded-full object-cover"
           src={img}
+          alt="user"
         />
       )}
 
-      {googleDisplayName && (
-        <p className="text-base font-PoppinsRegular tracking-wider truncate">
-          {t('hi')},{googleDisplayName}
-        </p>
-      )}
-
-      {name && (
+      {name ? (
         <Dropdown
-          menu={{
-            items,
-          }}
+          menu={{ items }}
           overlayClassName="pt-[1.1rem] z-100 w-[7rem]"
         >
           <a
             onClick={(e) => e.preventDefault()}
             className="flex items-center !no-underline"
           >
-            <p className="text-base ltr:font-PoppinsMedium rtl:font-TajawalBold tracking-wider
-            max-w-[8rem] truncate">
-              {t('hi')},{name}
+            <p className="text-base ltr:font-PoppinsMedium rtl:font-TajawalBold tracking-wider max-w-[8rem] truncate">
+              {t('hi')}, {name}
             </p>
             <p className="-ms-1.5 mt-[2px] lg:text-[1.5rem] navXl:text-[1.8rem]">
               <RiArrowDropDownLine />
             </p>
           </a>
         </Dropdown>
-      )}
+      ) : fallbackName ? (
+        <p className="text-base font-PoppinsRegular tracking-wider truncate">
+          {t('hi')}, {fallbackName}
+        </p>
+      ) : null}
     </div>
   );
 }
