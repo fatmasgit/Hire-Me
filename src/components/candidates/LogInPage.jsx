@@ -20,7 +20,7 @@ export default function LogIn() {
   const [passwordError, setPasswordError] = useState("");
 
   const dispatch = useDispatch();
-    const navigate =useNavigate()
+  const navigate = useNavigate()
   const { formLoading, googleLoading, user, error, message } = useSelector(
     (state) => state.candidateSignUp
   );
@@ -60,11 +60,11 @@ export default function LogIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Validate email and password
     validateEmail(email);
     validatePassword(password);
-  
+
     if (!emailError && !passwordError && email && password) {
       dispatch(loginCandidate({ email, password }))
         .unwrap()
@@ -73,14 +73,14 @@ export default function LogIn() {
           // Navigate after success
           setTimeout(() => {
             navigate('/');
-          }, 3000); 
+          }, 3000);
         })
         .catch((err) => toast.error(err || t("Login failed")));
     } else {
       toast.error(t("Please check your inputs."));
     }
   };
-  
+
 
 
 
@@ -88,7 +88,7 @@ export default function LogIn() {
     dispatch(loginWithGoogle())
       .unwrap()
       .then((response) => {
-        toast.success(t("Welcome") + `, ${response.displayName}!`, {
+        toast.success(t("Login successful!"), {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -97,8 +97,8 @@ export default function LogIn() {
           draggable: true,
           progress: undefined,
         });
-  
-     
+
+
         setTimeout(() => {
           navigate('/');
         }, 3000);
@@ -115,7 +115,7 @@ export default function LogIn() {
         });
       });
   };
-  
+
 
   return (
     <div className="flex flex-col justify-start w-full bg-[#FDFDFD] bg-cover py-4 bg-multiple  min-h-screen  ">
