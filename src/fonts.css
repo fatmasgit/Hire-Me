@@ -1,0 +1,46 @@
+/*en-font*/
+@font-face {
+  font-family: "PoppinsLight";
+  src: url("/src/fonts/enFont/Poppins-Light.ttf");
+}
+
+@font-face {
+  font-family: "PoppinsRegular";
+  src: url("/src/fonts/enFont/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "PoppinsMedium";
+  src: url("/src/fonts/enFont/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: "PoppinsSemiBold";
+  src: url("/src/fonts/enFont/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "PoppinsBold";
+  src: url("/src/fonts/enFont/Poppins-Bold.ttf");
+}
+
+/*ar-font*/
+@font-face {
+  font-family: "TajawalLight";
+  src: url("/src/fonts/arFont/Tajawal-Light.ttf");
+}
+
+@font-face {
+  font-family: "TajawalRegular";
+  src: url("/src/fonts/arFont/Tajawal-Regular.ttf");
+}
+
+@font-face {
+  font-family: "TajawalMedium";
+  src: url("/src/fonts/arFont/Tajawal-Medium.ttf");
+}
+
+@font-face {
+  font-family: "TajawalBold";
+  src: url("/src/fonts/arFont/Tajawal-Bold.ttf");
+}
