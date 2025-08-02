@@ -8,31 +8,24 @@ import { auth, db } from "../../Firebase/firebaseConfig";
 import { supabase } from '../../SuperBase/SuperBaseConfig';
 
 
-
-
 // Async thunk to handle user signup
 export const signupUser = createAsyncThunk(
   'employersSignUp/signupUser',
-  async ({ name, email, profession, password, profileImage
-  }, { rejectWithValue }) => {
+  async ({ name, email, profession, password, profileImage }, { rejectWithValue }) => {
     try {
-      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
       // Process the profile photo
       let imageUrl = null;
-      if (profileImage
-      ) {
-        const fileExt = profileImage
-          .name.split('.').pop();
+      if (profileImage) {
+        const fileExt = profileImage.name.split('.').pop();
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `Employers-images/${fileName}`;
 
         const { error: imageUploadError } = await supabase.storage
           .from('Employers')
-          .upload(filePath, profileImage
-            , { cacheControl: '3600', upsert: false });
+          .upload(filePath, profileImage, { cacheControl: '3600', upsert: false });
 
         if (imageUploadError) {
           throw new Error(`Image upload failed: ${imageUploadError.message}`);
@@ -47,7 +40,6 @@ export const signupUser = createAsyncThunk(
         }
 
         imageUrl = publicUrlData.publicUrl;
-
       }
 
       // Save user data to Firestore
@@ -59,16 +51,19 @@ export const signupUser = createAsyncThunk(
         imageUrl,
       });
 
-      return { uid, name, email, profession, imageUrl };
+      return {
+        uid,
+        name,
+        email,
+        profession,
+        imageUrl,
+        role: 'employer',
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
-
-
-
-
 
 
 // Async thunk to handle user login
@@ -79,13 +74,13 @@ export const loginUser = createAsyncThunk(
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
-      // Fetch user data from Firestore after login
       const employersDoc = doc(db, 'employers', uid);
       const docSnap = await getDoc(employersDoc);
 
       if (docSnap.exists()) {
         return {
           uid,
+          role: 'employer',
           message: 'Login successful!',
           ...docSnap.data()
         };
@@ -99,11 +94,7 @@ export const loginUser = createAsyncThunk(
 );
 
 
-
-
-
-
-//sign in with google
+// sign in with google
 export const loginWithGoogle = createAsyncThunk(
   'employersSignUp/loginWithGoogle',
   async (_, { rejectWithValue }) => {
@@ -112,19 +103,18 @@ export const loginWithGoogle = createAsyncThunk(
       const userCredential = await signInWithPopup(auth, provider);
       const { uid, email, displayName } = userCredential.user;
 
-      // Return user details including displayName
-      return { uid, email, displayName, message: 'Login successful!' };
+      return {
+        uid,
+        email,
+        displayName,
+        role: 'employer',
+        message: 'Login successful!',
+      };
     } catch (error) {
-
       return rejectWithValue(error.message);
     }
   }
 );
-
-
-
-
-
 
 
 // Async thunk to add a job to Firestore
@@ -140,13 +130,11 @@ export const addJobToFirestore = createAsyncThunk(
       let jobImageUrl = null;
 
       try {
-        // Check if a job image is provided
         if (jobImage) {
           const fileExt = jobImage.name.split('.').pop();
           const fileName = `${Date.now()}.${fileExt}`;
           const filePath = `Job-images/${fileName}`;
 
-          // Upload the job image to Supabase storage
           const { error: imageUploadError } = await supabase.storage
             .from('Employers')
             .upload(filePath, jobImage, { cacheControl: '3600', upsert: false });
@@ -155,7 +143,6 @@ export const addJobToFirestore = createAsyncThunk(
             throw new Error(`Image upload failed: ${imageUploadError.message}`);
           }
 
-          // Get the public URL of the uploaded image
           const { data: publicUrlData, error: imageUrlError } = supabase.storage
             .from('Employers')
             .getPublicUrl(filePath);
@@ -167,7 +154,6 @@ export const addJobToFirestore = createAsyncThunk(
           jobImageUrl = publicUrlData.publicUrl;
         }
 
-        // Add the new job to the "jobs" collection in Firestore
         const jobRef = collection(db, 'jobs');
         const newJob = {
           employerId: uid,
@@ -181,12 +167,9 @@ export const addJobToFirestore = createAsyncThunk(
           jobRequirements,
           companyImage: jobImageUrl,
           salaryCurrency: salaryCurrency.toLowerCase()
-
         };
 
-        // Add the new job to Firestore
         await addDoc(jobRef, newJob);
-        //   console.log('Job added to Firestore!');
       } catch (error) {
         return rejectWithValue(error.message);
       }
@@ -197,23 +180,18 @@ export const addJobToFirestore = createAsyncThunk(
 );
 
 
-
-
-
-
-
-
 // Redux slice
 const employersSignUpSlice = createSlice({
   name: 'employersSignUp',
   initialState: {
     user: null,
-    formLoading: false,      // For form login/signup
-    googleLoading: false,   // For Google login
+    role: null,
+    formLoading: false,
+    googleLoading: false,
     error: null,
     message: null,
     loading: null,
-    jobLoading: false,   // Loading state for job posting
+    jobLoading: false,
     jobError: null,
   },
   reducers: {},
@@ -226,6 +204,7 @@ const employersSignUpSlice = createSlice({
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
@@ -239,6 +218,7 @@ const employersSignUpSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.formLoading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.formLoading = false;
@@ -253,6 +233,7 @@ const employersSignUpSlice = createSlice({
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.googleLoading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
         state.message = action.payload.message;
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
@@ -261,20 +242,17 @@ const employersSignUpSlice = createSlice({
         state.message = null;
       })
 
-
-      //postJob
       .addCase(addJobToFirestore.pending, (state) => {
         state.jobLoading = true;
         state.jobError = null;
       })
-      .addCase(addJobToFirestore.fulfilled, (state, action) => {
+      .addCase(addJobToFirestore.fulfilled, (state) => {
         state.jobLoading = false;
       })
       .addCase(addJobToFirestore.rejected, (state, action) => {
         state.jobLoading = false;
         state.jobError = action.payload;
-      })
-
+      });
   },
 });
 

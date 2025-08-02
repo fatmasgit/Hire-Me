@@ -25,7 +25,6 @@ export const signupCandidate = createAsyncThunk(
     cv
   }, { rejectWithValue }) => {
     try {
-      // Create Firebase user
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const { uid } = userCredential.user;
 
@@ -92,12 +91,23 @@ export const signupCandidate = createAsyncThunk(
         major,
         educationLevel,
         graduationYear,
-        imageUrl, // Uploaded image URL
-        cvUrl, // Uploaded CV URL
+        imageUrl,
+        cvUrl,
         createdAt: new Date().toISOString(),
       });
 
-      return { uid, firstName, lastName, email, imageUrl, cvUrl, major, educationLevel, graduationYear };
+      return {
+        uid,
+        role: 'candidate',
+        firstName,
+        lastName,
+        email,
+        imageUrl,
+        cvUrl,
+        major,
+        educationLevel,
+        graduationYear
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -105,10 +115,7 @@ export const signupCandidate = createAsyncThunk(
 );
 
 
-
-
-
-// login thunck function
+// login thunk function
 export const loginCandidate = createAsyncThunk(
   'candidatesSignUp/loginCandidate',
   async ({ email, password }, { rejectWithValue }) => {
@@ -123,6 +130,7 @@ export const loginCandidate = createAsyncThunk(
       if (docSnap.exists()) {
         return {
           uid,
+          role: 'candidate',
           message: 'Login successful!',
           ...docSnap.data()
         };
@@ -130,7 +138,6 @@ export const loginCandidate = createAsyncThunk(
         throw new Error('No such user found!');
       }
     } catch (error) {
-      // Return specific error messages based on the error type
       if (error.code === 'auth/user-not-found') {
         return rejectWithValue('User not found!');
       } else if (error.code === 'auth/wrong-password') {
@@ -143,8 +150,7 @@ export const loginCandidate = createAsyncThunk(
 );
 
 
-
-//sign in with google
+// sign in with google
 export const loginWithGoogle = createAsyncThunk(
   'candidatesSignUp/loginWithGoogle',
   async (_, { rejectWithValue }) => {
@@ -153,16 +159,18 @@ export const loginWithGoogle = createAsyncThunk(
       const userCredential = await signInWithPopup(auth, provider);
       const { uid, email, displayName } = userCredential.user;
 
-      // Return user details including displayName
-      return { uid, email, displayName, message: 'Login successful!' };
+      return {
+        uid,
+        email,
+        displayName,
+        role: 'candidate',
+        message: 'Login successful!'
+      };
     } catch (error) {
-
       return rejectWithValue(error.message);
     }
   }
 );
-
-
 
 
 // Redux slice for candidate 
@@ -170,8 +178,9 @@ const candidatesSignUpSlice = createSlice({
   name: 'candidatesSignUp',
   initialState: {
     user: null,
-    formLoading: false, // For form login/signup
-    googleLoading: false, // For Google login
+    role: null,
+    formLoading: false,
+    googleLoading: false,
     error: null,
     message: null,
     loading: null
@@ -179,7 +188,6 @@ const candidatesSignUpSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Handle signupCandidate actions
       .addCase(signupCandidate.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -187,13 +195,13 @@ const candidatesSignUpSlice = createSlice({
       .addCase(signupCandidate.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
       })
       .addCase(signupCandidate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      //login
       .addCase(loginCandidate.pending, (state) => {
         state.formLoading = true;
         state.error = null;
@@ -202,6 +210,7 @@ const candidatesSignUpSlice = createSlice({
       .addCase(loginCandidate.fulfilled, (state, action) => {
         state.formLoading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
         state.message = action.payload.message;
       })
       .addCase(loginCandidate.rejected, (state, action) => {
@@ -209,8 +218,6 @@ const candidatesSignUpSlice = createSlice({
         state.error = action.payload;
         state.message = null;
       })
-
-      //login with google
 
       .addCase(loginWithGoogle.pending, (state) => {
         state.googleLoading = true;
@@ -220,6 +227,7 @@ const candidatesSignUpSlice = createSlice({
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.googleLoading = false;
         state.user = action.payload;
+        state.role = action.payload.role;
         state.message = action.payload.message;
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
@@ -227,13 +235,7 @@ const candidatesSignUpSlice = createSlice({
         state.error = action.payload;
         state.message = null;
       });
-
   },
 });
-
-
-
-
-
 
 export default candidatesSignUpSlice.reducer;

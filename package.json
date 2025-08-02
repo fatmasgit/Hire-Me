@@ -64,6 +64,7 @@
     "react-select": "^5.8.1",
     "react-slick": "^0.30.2",
     "react-toastify": "^11.0.0",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "rsuite": "^5.74.2",
     "slate": "^0.112.0",

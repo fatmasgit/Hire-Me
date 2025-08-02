@@ -13,7 +13,7 @@ export const fetchUserData = createAsyncThunk(
         const uid = user.uid;
         const displayName = user.displayName || null;
 
-        // Attempt to get the employer document
+        // Check if user is an employer
         const employerDocRef = doc(db, 'employers', uid);
         const employerDocSnap = await getDoc(employerDocRef);
 
@@ -26,7 +26,7 @@ export const fetchUserData = createAsyncThunk(
           };
         }
 
-        // Attempt to get the candidate document
+        // Check if user is a candidate
         const candidateDocRef = doc(db, 'candidates', uid);
         const candidateDocSnap = await getDoc(candidateDocRef);
 
@@ -39,7 +39,7 @@ export const fetchUserData = createAsyncThunk(
           };
         }
 
-        // No document found
+        // User is logged in but has no matching document
         return {
           authenticated: true,
           userDocument: null,
@@ -48,34 +48,33 @@ export const fetchUserData = createAsyncThunk(
         };
       }
 
-      // User is not authenticated
+      // No logged-in user
       return { authenticated: false, userDocument: null, role: null, displayName: null };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
-
-
-
-
-
 
 // Async thunk to log out the user
 export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await auth.signOut();
-      return { authenticated: false, userDocument: null, role: null, displayName: null };
+      await auth.signOut(); // Firebase sign-out
+      return {
+        authenticated: false,
+        userDocument: null,
+        role: null,
+        displayName: null
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-
-// Slice to manage authentication state
+// Auth slice
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -105,26 +104,22 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-
-
-      //log Out
+      // Logout
       .addCase(logout.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.fulfilled, (state) => {
         state.loading = false;
-        state.authenticated = action.payload.authenticated;
-        state.userDocument = action.payload.userDocument;
-        state.role = action.payload.role;
-        state.displayName = action.payload.displayName;
+        state.authenticated = false;
+        state.userDocument = null;
+        state.role = null;
+        state.displayName = null;
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
-
-
   },
 });
 
