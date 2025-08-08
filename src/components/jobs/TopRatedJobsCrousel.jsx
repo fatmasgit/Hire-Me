@@ -11,33 +11,27 @@ import { useSelector } from "react-redux";
 const TopRatedCarousel = ({ filter }) => {
   const { i18n } = useTranslation();
   const direction = i18n.dir(i18n.language);
-  const [swiperKey, setSwiperKey] = useState(0);
   const { data, status, error } = useSelector((state) => state.jobs);
 
 
-// getting a jobs of different cities
-const distinctCities = data.reduce((acc, item) => {
-  if (acc.length >= 4) return acc;
-  if (!acc.some((city) => city.jobLocation.city === item.jobLocation.city)) {
-    acc.push(item); 
-  }
-  return acc;
-}, []);
+  // getting a jobs of different cities
+  const distinctCities = data.reduce((acc, item) => {
+    if (acc.length >= 4) return acc;
+    if (!acc.some((city) => city.jobLocation.city === item.jobLocation.city)) {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
 
 
 
-
-  useEffect(() => {
-    // Trigger re-initialization of Swiper when direction changes
-    setSwiperKey((prevKey) => prevKey + 1);
-  }, [direction]);
 
 
 
   return (
     <div className="w-full " dir={direction}>
       <Swiper
-        key={swiperKey} // Force re-initialization on direction change
+        key={distinctCities.length} // ensures re-init when data changes
         dir={direction}
         effect="cube"
         modules={[EffectCube, Autoplay, Pagination]}
@@ -51,8 +45,8 @@ const distinctCities = data.reduce((acc, item) => {
           shadowOffset: 20,
           shadowScale: 0.94,
         }}
-   
-      
+
+
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
@@ -63,7 +57,7 @@ const distinctCities = data.reduce((acc, item) => {
       >
         {distinctCities.map((elm, i) => (
           <SwiperSlide key={i}>
-            <TopRatedJobs filter={filter}  job={elm}  />
+            <TopRatedJobs filter={filter} job={elm} />
           </SwiperSlide>
         ))}
       </Swiper>

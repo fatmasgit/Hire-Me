@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { setFilter, setJobsPerCompany } from "../../redux/slices/jobsSlice";
+import { setFilter} from "../../redux/slices/jobsSlice";
 import { useTranslation } from "react-i18next";
 
 export default function SkillsFilter({ }) {
@@ -43,7 +43,7 @@ export default function SkillsFilter({ }) {
   useEffect(() => {
     return () => {
       dispatch(setFilter({ name: "skill", value: [] }));
-      dispatch(setJobsPerCompany(null));
+
     };
   }, [dispatch]);
 

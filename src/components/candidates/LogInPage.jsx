@@ -14,165 +14,138 @@ export default function LogIn() {
   const direction = i18n.dir(i18n.language);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { formLoading, googleLoading, user, error, message } = useSelector(
+  const navigate = useNavigate();
+  const { formLoading, googleLoading } = useSelector(
     (state) => state.candidateSignUp
   );
 
+  const toastConfig = {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  };
+
+  const inputClass = (error) =>
+    `h-10 w-full rounded-md border px-2 font-PoppinsRegular focus:outline-none focus:ring-2 ${error
+      ? "border-red-500 focus:ring-red-500"
+      : "border-gray-300 focus:ring-blue-500"
+    }`;
+
   const validateEmail = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!value) {
-      setEmailError(t("Email is required"));
-    } else if (!emailRegex.test(value)) {
-      setEmailError(t("Please enter a valid email address"));
-    } else {
-      setEmailError("");
-    }
+    if (!value) return t("Email is required");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      return t("Please enter a valid email address");
+    return "";
   };
 
   const validatePassword = (value) => {
-    if (!value) {
-      setPasswordError(t("Password is required"));
-    } else if (value.length < 8) {
-      setPasswordError(t("Password must be at least 8 characters long"));
-    } else {
-      setPasswordError("");
-    }
+    if (!value) return t("Password is required");
+    if (value.length < 8)
+      return t("Password must be at least 8 characters long");
+    return "";
   };
 
-  const handleEmailChange = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    validateEmail(value);
-  };
-
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    validatePassword(value);
+  const handleChange = (field, value) => {
+    setCredentials((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({
+      ...prev,
+      [field]:
+        field === "email" ? validateEmail(value) : validatePassword(value),
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const emailError = validateEmail(credentials.email);
+    const passwordError = validatePassword(credentials.password);
+    setErrors({ email: emailError, password: passwordError });
 
-    // Validate email and password
-    validateEmail(email);
-    validatePassword(password);
-
-    if (!emailError && !passwordError && email && password) {
-      dispatch(loginCandidate({ email, password }))
+    if (!emailError && !passwordError) {
+      dispatch(loginCandidate(credentials))
         .unwrap()
         .then(() => {
-          toast.success(t("Login successful!"));
-          // Navigate after success
-          setTimeout(() => {
-            navigate('/');
-          }, 3000);
+          toast.success(t("Login successful!"), toastConfig);
+          setTimeout(() => navigate("/"), 3000);
         })
-        .catch((err) => toast.error(err || t("Login failed")));
+        .catch((err) =>
+          toast.error(err || t("Login failed"), toastConfig)
+        );
     } else {
-      toast.error(t("Please check your inputs."));
+      toast.error(t("Please check your inputs."), toastConfig);
     }
   };
-
-
-
 
   const handleGoogleSignIn = () => {
     dispatch(loginWithGoogle())
       .unwrap()
-      .then((response) => {
-        toast.success(t("Login successful!"), {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-
-
-        setTimeout(() => {
-          navigate('/');
-        }, 3000);
+      .then(() => {
+        toast.success(t("Login successful!"), toastConfig);
+        setTimeout(() => navigate("/"), 3000);
       })
-      .catch((err) => {
-        toast.error(err || t("Google Sign-In Error"), {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
+      .catch((err) =>
+        toast.error(err || t("Google Sign-In Error"), toastConfig)
+      );
   };
 
-
   return (
-    <div className="flex flex-col justify-start w-full bg-[#FDFDFD] bg-cover py-4 bg-multiple  min-h-screen  ">
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-center"
-        newestOnTop={false}
-        rtl={direction === "rtl"}
-        pauseOnFocusLoss
-      />
+    <div className="flex flex-col justify-start w-full bg-[#FDFDFD] py-4 min-h-screen">
+      <ToastContainer newestOnTop={false} rtl={direction === "rtl"} />
 
-      <div className="w-full flex  px-4 justify-between  items-start">
+      {/* Logo & Lang Switch */}
+      <div className="w-full flex px-4 justify-between items-start">
         <Link to="/" className="!no-underline">
           <img
-            className="w-[8rem] lg:w-[9rem] object-contain  mb-5"
+            className="w-32 lg:w-36 object-contain mb-5"
             src="/assets/Logo/logo.png"
+            alt="Logo"
           />
         </Link>
         <LangButton />
       </div>
 
+      {/* Form Container */}
       <div className="flex-1 flex w-full items-center">
-        <div className="mx-auto mb-2 flex h-fit flex-col items-center gap-y-2 rounded-xl border-[1px]
-          border-[#dcd9d9] bg-white px-3 py-4 shadow-md xs:w-[80%] sm:w-[60%] md:w-[45%] lg:w-[35%] ">
-          <p className="font-PoppinsSemiBold text-[1.5rem] leading-tight text-[#444444] mt-2">
+        <div className="mx-auto mb-2 flex h-fit flex-col items-center gap-y-2 rounded-xl border border-gray-300 bg-white px-3 py-4 shadow-md xs:w-4/5 sm:w-3/5 md:w-[45%] lg:w-[35%]">
+          <p className="font-PoppinsSemiBold text-xl leading-tight text-gray-700 mt-2">
             {t("Welcome back!")}
           </p>
-          <p className="text-center font-PoppinsMedium text-[1rem] leading-tight text-[#444444] mb-2">
+          <p className="text-center font-PoppinsMedium text-base leading-tight text-gray-700 mb-4">
             {t("You Have Been Missed For Long Time")}
           </p>
 
+          {/* Form */}
           <form onSubmit={handleSubmit} className="flex w-full flex-col">
             <input
               type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
+              value={credentials.email}
+              onChange={(e) => handleChange("email", e.target.value)}
               placeholder={t("Enter your email")}
-              className={`my-1 !h-[2.5rem] rounded-md border ps-2 font-PoppinsRegular ${emailError ? "border-red-500" : "border-gray-300"}
-                focus:outline-none focus:ring-2 ${emailError ? "focus:ring-red-500" : "focus:ring-blue-500"}`}
+              className={inputClass(errors.email)}
             />
-            {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+            )}
 
             <div className="relative my-2">
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
+                value={credentials.password}
+                onChange={(e) => handleChange("password", e.target.value)}
                 placeholder={t("Password")}
-                className={`h-[2.5rem] w-full rounded-md border ps-2 font-PoppinsRegular ${passwordError ? "border-red-500" : "border-gray-300"}
-                  focus:outline-none focus:ring-2 ${passwordError ? "focus:ring-red-500" : "focus:ring-blue-500"}`}
+                className={inputClass(errors.password)}
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className={`absolute inset-y-0 ${direction === "rtl" ? "left-3" : "right-3"} flex items-center text-gray-500`}
+                onClick={() => setShowPassword((prev) => !prev)}
+                className={`absolute inset-y-0 ${direction === "rtl" ? "left-3" : "right-3"
+                  } flex items-center text-gray-500`}
               >
                 {showPassword ? (
                   <AiOutlineEyeInvisible size={20} />
@@ -181,10 +154,12 @@ export default function LogIn() {
                 )}
               </button>
             </div>
-            {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+            )}
 
-            <span className="self-end font-PoppinsMedium text-[0.95rem] text-[#3B235D]">
-              <Link to="/SendOtp" className="w-full !no-underline">
+            <span className="self-end font-PoppinsMedium text-sm text-[#3B235D]">
+              <Link to="/SendOtp" className="!no-underline">
                 {t("Forget Your Password ?")}
               </Link>
             </span>
@@ -197,16 +172,17 @@ export default function LogIn() {
             </button>
           </form>
 
+          {/* Google Login */}
           <button
             onClick={handleGoogleSignIn}
-            className="flex justify-center gap-x-1 mt-4 w-full rounded-md
-            bg-white py-2 text-[#3B235D] border text-base font-PoppinsRegular"
+            className="flex justify-center gap-x-1 mt-4 w-full rounded-md bg-white py-2 text-[#3B235D] border text-base font-PoppinsRegular"
           >
             <FcGoogle size={22} />
             {googleLoading ? t("Logging in...") : t("Login with Google")}
           </button>
 
-          <p className="mx-2 my-2 font-PoppinsRegular text-[0.9rem] text-[#808184]">
+          {/* Sign Up Link */}
+          <p className="mx-2 my-2 font-PoppinsRegular text-sm text-gray-500">
             {t("Don't have an account ?")}
             <span className="px-1 font-PoppinsMedium text-[#3B235D]">
               <Link to="/SignUp" className="!no-underline">

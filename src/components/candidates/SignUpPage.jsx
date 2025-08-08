@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import SignUpForm from "./signUpForm";
 import { signupCandidate } from "../../redux/slices/candidatesSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,7 +58,7 @@ export default function SignUp() {
       <div className="w-full flex  px-4 justify-between  items-start">
         <Link to="/" className="!no-underline">
           <img
-            className="  w-[8rem] lg:w-[9rem] object-contain  mb-5"
+            className="  w-32 lg:w-36 object-contain  mb-5"
             src="/assets/Logo/logo.png"
           />
         </Link>
@@ -67,7 +66,7 @@ export default function SignUp() {
       </div>
 
       <div className="mx-auto rounded-xl border-[1px] border-[#dcd9d9] bg-white px-3
-       py-4 shadow-md xs:w-[80%] sm:w-[60%]  md:w-[45%] lg:w-[35%]">
+       py-4 shadow-md       xs:w-4/5 sm:w-3/5 md:w-2/5 lg:w-1/3">
         <p className="mb-3 text-center ltr:font-PoppinsSemiBold  rtl:font-TajawalBold text-lg text-[#444444]">
           {t("signUp")}
         </p>
