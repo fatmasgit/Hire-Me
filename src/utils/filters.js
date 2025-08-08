@@ -17,5 +17,5 @@ export const Majors = [
     { value: "data science", name: "Data Science", arabicName: "علم البيانات" },
 ];
 
-// Optionally, you can reuse Majors if Category === Major
+
 export const Categories = [...Majors];

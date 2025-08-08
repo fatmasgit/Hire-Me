@@ -5,25 +5,23 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Company from "./companiesCarouselCard";
-import { fetchCompanies, fetchCompanyJobs } from "../../redux/slices/companiesSlice"; // Adjust path accordingly
-import { setJobsPerCompany } from "../../redux/slices/jobsSlice"; // Add this import
-
+import {
+  fetchCompanies,
+  fetchCompanyJobs,
+} from "../../redux/slices/companiesSlice";
 
 export default function CompaniesCarousel() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-
-  const { companies, loadingCompanies, companiesError, companiesWithJobs } = useSelector(
-    (state) => state.companies
+  const { companies, companiesWithJobs } = useSelector(
+    (state) => state.companies,
   );
 
-  // Fetch companies on component mount
   useEffect(() => {
     dispatch(fetchCompanies());
   }, [dispatch]);
 
-  // Fetch jobs for each company when companies are loaded
   useEffect(() => {
     if (companies.length > 0) {
       companies.forEach((company) => {
@@ -32,15 +30,13 @@ export default function CompaniesCarousel() {
     }
   }, [dispatch, companies]);
 
-  // Process companiesWithJobs to get top 4 companies
   const topCompanies = Object.entries(companiesWithJobs)
     .map(([name, jobs]) => ({ name, jobs, jobCount: jobs.length }))
-    .sort((a, b) => b.jobCount - a.jobCount) // Sort by job count in descending order
-    .slice(0, 4); // Get top 4 companies
+    .sort((a, b) => b.jobCount - a.jobCount)
+    .slice(0, 4);
 
-  // Filter the companies array to include only top companies
   const filteredCompanies = companies.filter((company) =>
-    topCompanies.some((topCompany) => topCompany.name === company.name)
+    topCompanies.some((topCompany) => topCompany.name === company.name),
   );
 
   const settings = {
@@ -58,35 +54,26 @@ export default function CompaniesCarousel() {
     ],
   };
 
-
-
-
-
-  //console.log("Top Companies:", filteredCompanies)
   return (
-    <div className="w-full bg-[#FAFAFA] py-[3rem] text-center">
-      <p className="!mb-0 text-center font-PoppinsSemiBold text-base text-[#000000] md:text-lg">
+    <div className="w-full bg-[#FAFAFA] py-12 text-center">
+      <p className="!mb-0 text-center font-PoppinsSemiBold text-base text-black md:text-lg">
         {t("TOP EMPLOYERS")}
       </p>
-      <p className="mx-auto !mt-0 mb-4 max-w-[80%] font-PoppinsRegular text-sm text-[#000000] md:text-base">
+      <p className="mx-auto !mt-0 mb-4 w-4/5 max-w-screen-md font-PoppinsRegular text-sm text-black md:text-base">
         {t("Recommend top employers")}
       </p>
 
-      <div className="slider-container mx-auto xs:w-[70%]  md:w-[75%]  ">
+      <div className=" slider-container mx-auto xs:w-4/6 md:w-3/4">
         <Slider {...settings}>
-          {filteredCompanies.map((elm, i) =>
-          (
-
-            < Company
-
+          {filteredCompanies.map((elm, i) => (
+            <Company
               companyInfo={{
                 ...elm,
-
-                jobs: topCompanies.find((top) => top.name === elm.name)?.jobCount || 0,
+                jobs:
+                  topCompanies.find((top) => top.name === elm.name)?.jobCount ||
+                  0,
               }}
               key={i}
-
-
             />
           ))}
         </Slider>

@@ -93,7 +93,7 @@ export default function SkillsFilter({ }) {
 
       <button
         onClick={clearFilter}
-        className="mx-auto w-[90%] rounded-md border-[1px] border-[#3B235D] ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:h-[2.2rem] xl:h-[2.5rem] xs:text-sm xl:text-base bg-white text-[#3B235D]"
+        className="mx-auto w-11/12 rounded-md border-[1px] border-[#3B235D] ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:h-9 xl:h-[2.5rem] xs:text-sm xl:text-base bg-white text-[#3B235D]"
       >
         {t("clearFilters")}
       </button>
@@ -104,7 +104,7 @@ export default function SkillsFilter({ }) {
           <button
             key={button.value}
             onClick={() => handleButtonClick(button.value)}
-            className={`mx-auto w-[90%] rounded-md border-[1px] border-[#3B235D] font-PoppinsMedium transition-all duration-300 xs:h-[2.2rem] xl:h-[2.5rem] xs:text-sm xl:text-base ${isActive ? "bg-[#3B235D] text-white" : "bg-white text-[#3B235D]"
+            className={`mx-auto w-11/12 rounded-md border-[1px] border-[#3B235D] font-PoppinsMedium transition-all duration-300 xs:h-9 xl:h-[2.5rem] xs:text-sm xl:text-base ${isActive ? "bg-[#3B235D] text-white" : "bg-white text-[#3B235D]"
               }`}
           >
             {button.value}

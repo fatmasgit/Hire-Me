@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { RiArrowRightDoubleLine } from "react-icons/ri";
 
 export default function Company({ companyInfo }) {
   const { t, i18n } = useTranslation();
@@ -8,31 +9,28 @@ export default function Company({ companyInfo }) {
   return (
     <div
       dir={direction}
-      className="mx-2 flex flex-col overflow-hidden rounded-lg border-[0.5px] border-solid bg-[white]
-       shadow-md xs:h-[16rem]  md:w-[92%] lg:w-[90%]   "
-    // Add the onClick event to handle the click
+      className="my-2 mx-auto flex flex-col overflow-hidden rounded-lg border border-solid bg-white  xs:h-64 md:w-11/12 lg:w-9/10 transition-transform duration-300 hover:scale-105"
     >
       {/* Image Section */}
-      <div className="w-full  border-b">
+      <div className="w-full border-b">
         <img
-          className="w-full object-cover xs:h-[9rem] "
+          className="w-full object-cover xs:h-36"
           src={companyInfo?.image}
-
         />
       </div>
 
       {/* Text Section */}
-      <div className="mb-[0.5rem] ms-3 mt-[0.7rem] flex flex-col">
-        <p className="max-w-[85%] truncate text-start font-PoppinsSemiBold text-[#3B235D] xs:text-[1.1rem] rtl:self-start">
+      <div className="mb-2 ms-3 mt-2 flex flex-col">
+        <p className="max-w-[5/6] truncate text-start font-PoppinsSemiBold text-[#3B235D] xs:text-lg rtl:self-start">
           {companyInfo?.name}
         </p>
         <div className="mb-2 mt-2 flex gap-x-1">
           <img
-            className="mr-[0.3rem] self-center object-contain"
+            className="mr-1 self-center object-contain"
             src="/assets/icons/loc.png"
             alt="location"
           />
-          <p className="font-PoppinsRegular text-[#444444] xs:text-[1rem]">
+          <p className="font-PoppinsRegular text-[#444444] xs:text-base">
             {companyInfo.country} , {companyInfo.city}
           </p>
         </div>
@@ -40,14 +38,13 @@ export default function Company({ companyInfo }) {
           to={`/Companies/${companyInfo?.id}/${companyInfo?.name.replace(/\s+/g, "_")}`}
           className="!no-underline"
         >
-          <div className="flex  cursor-pointer "   >
-            <p className="font-PoppinsSemiBold text-[#3B235D] xs:text-[1rem]">
+          <div className="flex cursor-pointer items-center">
+            <p className="font-PoppinsSemiBold text-[#3B235D] xs:text-base">
               {companyInfo.jobs} {t("jobs")}
             </p>
-            <img
-              src="/assets/icons/arrow.png"
-              className="self-center object-contain xs:ms-[0.6rem] rtl:rotate-180"
-              alt="arrow"
+            <RiArrowRightDoubleLine
+              className="mx-1 rtl:rotate-180 text-[#3B235D]"
+              size={22}
             />
           </div>
         </Link>

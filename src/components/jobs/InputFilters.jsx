@@ -100,7 +100,7 @@ export default function InputFilters({ }) {
           <button
             key={index}
             type="button"
-            className={`rounded-md !border-[1px] !border-solid h-[2.2rem] px-3
+            className={`rounded-md !border-[1px] !border-solid h-9 px-3
               ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:text-xs lg:text-sm 
               ${jobTypesValue === job.value.toLowerCase()
                 ? "bg-[#3B235D] text-white border-[#3B235D]"
@@ -117,7 +117,7 @@ export default function InputFilters({ }) {
           <button
             key={index}
             type="button"
-            className={`rounded-md !border-[1px] !border-solid h-[2.2rem] px-3
+            className={`rounded-md !border-[1px] !border-solid h-9 px-3
               ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:text-xs lg:text-sm 
               ${workModeValue === mode.value.toLowerCase()
                 ? "bg-[#3B235D] text-white border-[#3B235D]"

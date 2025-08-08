@@ -39,10 +39,10 @@ export default function UserData() {
     {
       label: (
         <Link
-          to="/"
+          to="/Jobs"
           className="!no-underline lg:text-sm xl:text-base ltr:font-PoppinsRegular rtl:font-TajawalMedium"
         >
-          {t('profile')}
+          {t('findAJob')}
         </Link>
       ),
       key: '1',

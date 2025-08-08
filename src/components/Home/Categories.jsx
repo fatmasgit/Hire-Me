@@ -8,30 +8,48 @@ export default function Categories() {
   const dispatch = useDispatch();
 
   const languages = [
-    { language: "JavaScript", value: "javascript", src: "/assets/languages/js.png" },
-    { language: "Flutter", value: "flutter", src: "/assets/languages/flluter.svg" },
-    { language: "Android", value: "android", src: "/assets/languages/android.webp" },
+    {
+      language: "JavaScript",
+      value: "javascript",
+      src: "/assets/languages/js.png",
+    },
+    {
+      language: "Flutter",
+      value: "flutter",
+      src: "/assets/languages/flluter.svg",
+    },
+    {
+      language: "Android",
+      value: "android",
+      src: "/assets/languages/android.webp",
+    },
     { language: ".NET", value: ".net", src: "/assets/languages/net.svg" },
-    { language: "Python", value: "python", src: "/assets/languages/python.webp" },
+    {
+      language: "Python",
+      value: "python",
+      src: "/assets/languages/python.webp",
+    },
     { language: "SQL", value: "sql", src: "/assets/languages/sql.svg" },
   ];
 
   return (
-    <div className="bg-[#FAFAFA] py-[2rem] text-center">
-      <p className="!mb-0 font-PoppinsSemiBold text-base text-[#000000] md:text-lg">
+    <div className="bg-[#FAFAFA] py-8 text-center">
+      <p className="!mb-0 font-PoppinsSemiBold text-base text-black md:text-lg">
         {t("Featured Skill Categories")}
       </p>
-      <p className="mx-auto !mt-0 mb-4 max-w-[95%] font-PoppinsRegular text-sm text-[#000000] md:text-base">
+      <p className="mx-auto !mt-0 mb-4 w-11/12 max-w-screen-md font-PoppinsRegular text-sm text-black md:text-base">
         {t("Who are in extremely love with eco friendly system")}
       </p>
 
-      <div className="mx-auto flex w-[80%] justify-center gap-x-5 gap-y-5 bg-[#FAFAFA] xs:flex-wrap lg:flex-nowrap">
+      <div className="mx-auto flex w-11/12 flex-wrap justify-center gap-x-5 gap-y-5 bg-[#FAFAFA] lg:flex-nowrap">
         {languages.map((elm, i) => (
           <Link
             key={i}
             to={`/jobs/filter/skill/${elm.value}`}
-            onClick={() => dispatch(setFilter({ name: "skill", value: [elm.value] }))}
-            className="flex flex-col items-center justify-end bg-[#FAFAFA] xs:w-[25%] lg:w-[auto] cursor-pointer"
+            onClick={() =>
+              dispatch(setFilter({ name: "skill", value: [elm.value] }))
+            }
+            className="flex cursor-pointer flex-col items-center justify-end text-inherit !no-underline xs:w-1/4 lg:w-auto"
           >
             <img
               src={elm.src}

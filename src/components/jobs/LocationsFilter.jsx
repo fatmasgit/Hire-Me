@@ -82,8 +82,8 @@ export default function LocationsFilter({ }) {
 
       <button
         onClick={clearFilter}
-        className="mx-auto w-[90%] rounded-md border-[1px] border-[#3B235D] 
-        ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:h-[2.2rem] xl:h-[2.5rem] 
+        className="mx-auto w-11/12 rounded-md border-[1px] border-[#3B235D] 
+        ltr:font-PoppinsMedium rtl:font-TajawalMedium xs:h-9 xl:h-10 
         xs:text-sm xl:text-base bg-white text-[#3B235D]"
       >
         {t("clearFilters")}
@@ -96,9 +96,9 @@ export default function LocationsFilter({ }) {
           <button
             key={button.value}
             onClick={() => handleButtonClick(button.value)}
-            className={`mx-auto w-[90%] rounded-md border-[1px] border-[#3B235D] 
+            className={`mx-auto w-11/12 rounded-md border-[1px] border-[#3B235D] 
               ltr:font-PoppinsMedium rtl:font-TajawalMedium transition-all duration-300 
-              xs:h-[2.2rem] xl:h-[2.5rem] xs:text-sm xl:text-base ${isActive ? "bg-[#3B235D] text-white" : "bg-white text-[#3B235D]"
+              xs:h-9 xl:h-10 xs:text-sm xl:text-base ${isActive ? "bg-[#3B235D] text-white" : "bg-white text-[#3B235D]"
               }`}
           >
             <span className="ltr:hidden rtl:block">{button.arabic}</span>
@@ -109,9 +109,9 @@ export default function LocationsFilter({ }) {
 
       <button
         onClick={() => setShowAll(!showAll)}
-        className="mx-auto w-[90%] rounded-md border-[1px] border-[#3B235D] 
+        className="mx-auto w-11/12 rounded-md border-[1px] border-[#3B235D] 
         bg-white ltr:font-PoppinsMedium rtl:font-TajawalMedium text-[#3B235D] 
-        xs:h-[2.2rem] xs:text-[0.9rem] xl:h-[2.5rem] xl:text-[1rem]"
+        xs:h-9 xs:text-[0.9rem] xl:h-10 xl:text-[1rem]"
       >
         {showAll ? t("showLess") : t("showMore")}
       </button>
