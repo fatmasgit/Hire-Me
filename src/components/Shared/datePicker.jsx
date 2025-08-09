@@ -2,44 +2,57 @@ import React from "react";
 import { DatePicker } from "antd";
 import { useField } from "formik";
 import dayjs from "dayjs";
-import { BsExclamationCircle } from "react-icons/bs"; // Import the exclamation circle icon
+import { BsExclamationCircle } from "react-icons/bs";
 
 function Date({ label, name, ...props }) {
   const dateFormat = "YYYY-MM-DD";
   const [field, meta, helpers] = useField(name);
 
-  // Handle date change and update Formik state
   const onChange = (date, dateString) => {
-    helpers.setValue(dateString);  // Update Formik field value
+    helpers.setValue(dateString);
+  };
+
+  const onBlur = () => {
+    helpers.setTouched(true);
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <label
         htmlFor={name}
-        className="ms-1 ltr:font-PoppinsRegular rtl:font-TajawalMedium  text-[0.8rem] text-[#707070] flex items-center"
+        className="ms-1 flex items-center text-[0.8rem] text-[#707070] ltr:font-PoppinsRegular rtl:font-TajawalMedium"
       >
         {label}
         {meta.touched && meta.error && (
-          <BsExclamationCircle size={16} className="text-red-500 mx-1 mb-1" /> // Exclamation icon beside the label
+          <BsExclamationCircle size={16} className="mx-1 mb-1 text-red-500" />
         )}
       </label>
+
       <DatePicker
         id={name}
-        {...field}
-        {...props}
+        name={name}
         onChange={onChange}
+        onBlur={onBlur}
         value={field.value ? dayjs(field.value, dateFormat) : null}
         placeholder="YYYY-MM-DD"
         minDate={dayjs("1970-06-01", dateFormat)}
         maxDate={dayjs("2010-12-31", dateFormat)}
-        className='  h-[2.4rem] w-full !border-[1px] !border-[#dcd9d9]   text-gray-700 !ring-0 placeholder:text-[#dcd9d9] '
-        popupClassName="xs:w-[5rem]"
-        needConfirm
+        className="h-10 w-full !border-[1px] !border-[#dcd9d9] text-gray-700 !ring-0 placeholder:text-[#dcd9d9]"
+        // Remove today highlight in AntD v5
+        cellRender={(current, info) => {
+          if (info.type === "date") {
+            return (
+              <div className="ant-picker-cell-inner">{current.date()}</div>
+            );
+          }
+          return info.originNode;
+        }}
+        {...props}
       />
-      {meta.touched && meta.error ? (
-        <div className="text-red-500 text-sm">{meta.error}</div>
-      ) : null}
+
+      {meta.touched && meta.error && (
+        <div className="text-sm text-red-500">{meta.error}</div>
+      )}
     </div>
   );
 }

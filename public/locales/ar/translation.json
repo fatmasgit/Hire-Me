@@ -162,5 +162,12 @@
   "Mia Node": "ميا نود",
   "Senior Core Developer": "مطور أساسي أول",
   "Max Dev": "ماكس ديف",
-  "Creative Content Developer": "مطور محتوى إبداعي"
+  "Creative Content Developer": "مطور محتوى إبداعي",
+  "selectEducationLevel": "اختر المستوى التعليمي",
+  "highSchool": "الثانوية العامة",
+  "associateDegree": "دبلوم",
+  "bachelorDegree": "بكالوريوس",
+  "masterDegree": "ماجستير",
+  "doctorate": "دكتوراه",
+  "other": "أخرى"
 }
