@@ -10,7 +10,7 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 
 ---
 
-## 🚀 Features
+
 
 ### For Candidates
 - Browse job listings with **advanced filters**:
@@ -35,6 +35,15 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 - **Responsive design** for mobile and desktop.
 - **Deployed with Vercel** for smooth CI/CD and hosting.
 
+## ✨ Features
+
+- **Rich Content Job Posts** – Employers can create detailed job descriptions.
+- **Candidate Profile Management** – Real-time profile editing with instant updates.
+- **Asset Upload/Download** – Upload CVs, images, and download them anytime.
+- **Search Jobs** – Find jobs by category, location, or other filters.
+- **Custom Filtering** – Search and filtering logic powered by Redux Toolkit.
+- **Responsive UI** – Optimized for mobile, tablet, and desktop.
+- **Localization (i18n)** – Supports Arabic 🇪🇬 and English 🇬🇧.
 ---
 
 ## 🛠️ Technologies Used
@@ -42,6 +51,7 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 - **Frontend**:
   - React + React Router
   - Material UI (MUI) – TextFields, Tabs, Buttons, and more
+  - Tailwind CSS
   - Formik – Form validation and handling
   - Redux Toolkit + `createAsyncThunk` – State management
 - **Backend & Storage**:
