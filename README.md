@@ -67,6 +67,13 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 
 ## 📂 Project Structure
 
+public/
+├── assets/       # images, icons, etc.
+├── fonts/        # Arabic & English font files
+├── locales/      # i18n translation files (ar.json, en.json)
+└── index         # public index.html
+
+
 src /
 
 ├── appLayout/     # Layout components (header, footer, navigation)
