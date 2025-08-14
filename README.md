@@ -66,4 +66,13 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 ---
 
 ## 📂 Project Structure
+src/
+├── appLayout/ # Layout components (header, footer, navigation)
+├── components/ # Shared and reusable UI components
+├── firebase/ # Firebase configuration & services
+├── localization/ # i18n translation files (ar & en)
+├── pages/ # Page-level components (Jobs, Profile, Post Job, etc.)
+├── redux/slices/ # Redux Toolkit slices for state management
+├── superBase/ # Supabase configuration & file handling
+├── utils/ # Helper and utility functions
 
