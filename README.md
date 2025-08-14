@@ -1,12 +1,12 @@
 # HireMe – Multi-Role Job Hiring App
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-NETLIFY-BADGE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-NETLIFY-SITE-NAME/deploys)
+[![Vercel Status](https://img.shields.io/github/deployments/fatmasgit/Hire-Me/production?label=vercel&logo=vercel)](https://hire-me-1pmx.vercel.app/)
 
-**Live Demo:** [https://YOUR-NETLIFY-SITE-NAME.netlify.app](https://YOUR-NETLIFY-SITE-NAME.netlify.app)
+**Production:** [https://hire-me-1pmx.vercel.app/](https://hire-me-1pmx.vercel.app/)
 
 **HireMe** is a full-featured hiring platform that connects **candidates** and **employers** in a seamless experience.  
 It provides **job listings with advanced filtering**, candidate profile management, and employer job posting — all with modern, responsive UI and multilingual support (Arabic & English).  
-**Deployed with [Netlify](https://www.netlify.com/)** for fast and reliable hosting.
+**Deployed with [Vercel](https://vercel.com/)** for fast and reliable hosting.
 
 ---
 
@@ -34,7 +34,7 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 - **Fast search** with query-based filtering.
 - **Multilingual support** – Arabic 🇪🇬 & English 🇬🇧.
 - **Responsive design** for mobile and desktop.
-- **Deployed with Netlify** for smooth CI/CD and hosting.
+- **Deployed with Vercel** for smooth CI/CD and hosting.
 
 ---
 
