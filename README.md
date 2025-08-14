@@ -1,74 +1,89 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# HireMe – Multi-Role Job Hiring App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Vercel Status](https://img.shields.io/github/deployments/fatmasgit/Hire-Me/production?label=vercel&logo=vercel)](https://hire-me-1pmx.vercel.app/)
 
-## Available Scripts
+**Production:** [https://hire-me-1pmx.vercel.app/](https://hire-me-1pmx.vercel.app/)
 
-In the project directory, you can run:
+**HireMe** is a full-featured hiring platform that connects **candidates** and **employers** in a seamless experience.  
+It provides **job listings with advanced filtering**, candidate profile management, and employer job posting — all with modern, responsive UI and multilingual support (Arabic & English).  
+**Deployed with [Vercel](https://vercel.com/)** for fast and reliable hosting.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### For Candidates
+- Browse job listings with **advanced filters**:
+  - **Location** (city-based search)
+  - **Skills** (technical and soft skills)
+  - **Job Type** (full-time, part-time)
+  - **Work Mode** (remote, on-site, hybrid)
+- Maintain a profile with **resume (CV) uploads** and **image assets**.
+- Sign up with **email/password** or **Google Authentication**.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### For Employers
+- Post new jobs with detailed requirements including descriptions, skills, salary range, and company details.
+- Manage posted jobs and applicants in real time.
+- Store job-related files securely (descriptions, images, PDFs).
+- Sign up with **email/password** or **Google Authentication**.
 
-### `npm run build`
+### General
+- **Real-time job updates** powered by Firebase Firestore.
+- **Role-based functionality** (candidate or employer).
+- **Fast search** with query-based filtering.
+- **Multilingual support** – Arabic 🇪🇬 & English 🇬🇧.
+- **Responsive design** for mobile and desktop.
+- **Deployed with Vercel** for smooth CI/CD and hosting.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ✨ Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Rich Content Job Posts** – Employers can create detailed job descriptions.
+- **Candidate Profile Management** – Real-time profile editing with instant updates.
+- **Asset Upload/Download** – Upload CVs, images, and download them anytime.
+- **Search Jobs** – Find jobs by category, location, or other filters.
+- **Custom Filtering** – Search and filtering logic powered by Redux Toolkit.
+- **Responsive UI** – Optimized for mobile, tablet, and desktop.
+- **Localization (i18n)** – Supports Arabic 🇪🇬 and English 🇬🇧.
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Technologies Used
 
-### `npm run eject`
+- **Frontend**:
+  - React + React Router
+  - Material UI (MUI) – TextFields, Tabs, Buttons, and more
+  - Tailwind CSS
+  - Formik – Form validation and handling
+  - Redux Toolkit + `createAsyncThunk` – State management
+- **Backend & Storage**:
+  - Firebase Firestore – Job listings and user profiles
+  - Firebase Authentication – Email/Password & Google Sign-In
+  - Supabase – Asset storage (CVs, images)
+- **Other**:
+  - Search query filtering
+  - Custom filtering logic with Redux
+  - i18n for **localization** (Arabic & English)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📂 Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+src /
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+├── appLayout/     # Layout components (header, footer, navigation)
 
-## Learn More
+├── components/    # Shared and reusable UI components
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+├── firebase/      # Firebase configuration & services
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+├── localization/  # i18n translation files (ar & en)
 
-### Code Splitting
+├── pages/         # Page-level components (Jobs, Profile, Post Job, etc.)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+├── redux/slices/  # Redux Toolkit slices for state management
 
-### Analyzing the Bundle Size
+├── superBase/     # Supabase configuration & file handling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+├── utils/         # Helper and utility functions
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# HireMe
->>>>>>> 48323aeb71ea0cdd7737c818cae964efa6884a4f
