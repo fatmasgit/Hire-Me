@@ -10,6 +10,7 @@ export default function CircularLoader() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                margin: 'auto',
             }}
         >
             <CircularProgress sx={{ color: '#3B235D' }} />

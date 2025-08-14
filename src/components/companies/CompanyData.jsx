@@ -11,7 +11,7 @@ import { TfiWorld } from "react-icons/tfi";
 import { TbCirclesRelation } from "react-icons/tb";
 import { useState } from "react";
 import JobCard from '../jobs/JobCard';
-
+import CircularLoader from "../shared/Loading"
 
 
 export default function CompanyData() {
@@ -52,12 +52,12 @@ export default function CompanyData() {
 
   return (
     <div>
-      {loadingSingleCompany && <p>Loading company data...</p>}
+      {loadingSingleCompany && <CircularLoader />}
       {singleCompanyError && <p>Error: {singleCompanyError}</p>}
 
       <div className="flex w-full flex-col gap-y-1 ">
         <img
-          src={singleCompany?.image}  className="h-[20rem] w-full object-cover xs:rounded-md md:rounded-xl"
+          src={singleCompany?.image} className="h-[20rem] w-full object-cover xs:rounded-md md:rounded-xl"
         />
 
         <p className="mt-3 font-PoppinsMedium text-2xl text-[#3B235D]  my-1">{singleCompany?.name}</p>
@@ -145,9 +145,9 @@ export default function CompanyData() {
           </p>
           <p className="mb-3 font-PoppinsRegular text-[0.9rem] text-[#444444]">
             <span className="font-PoppinsMedium">
-            { singleCompany?.name + ' ' } 
+              {singleCompany?.name + ' '}
             </span>
-             is reinventing the way businesses and governments work, stay and
+            is reinventing the way businesses and governments work, stay and
             pay in today’s dynamic global marketplace. {singleCompany?.name}’ advanced platform
             technology is extending its reach beyond hospitality to meetings,
             office space management, payment efficiency and crisis recovery.
@@ -165,7 +165,7 @@ export default function CompanyData() {
             groups and payment providers. More information at
             <span className="font-PoppinsMedium text-[#3B235D]">
               {" "}
-              {singleCompany?.website || 'https://www.xyz.com/enterprise/' }
+              {singleCompany?.website || 'https://www.xyz.com/enterprise/'}
             </span>
           </p>
           {/*heading */}{" "}
