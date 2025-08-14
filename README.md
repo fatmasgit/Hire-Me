@@ -18,7 +18,6 @@ It provides **job listings with advanced filtering**, candidate profile manageme
   - **Skills** (technical and soft skills)
   - **Job Type** (full-time, part-time)
   - **Work Mode** (remote, on-site, hybrid)
-- Apply to jobs directly and **save application history**.
 - Maintain a profile with **resume (CV) uploads** and **image assets**.
 - Sign up with **email/password** or **Google Authentication**.
 
