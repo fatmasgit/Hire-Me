@@ -1,7 +1,24 @@
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function HeroCards() {
   const { t } = useTranslation();
+
+  // Initialize AOS inside the component
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+  }, []);
+
+  // Helper function for AOS props
+  const getAOSProps = (index) => ({
+    "data-aos": "fade-up",
+    "data-aos-delay": index * 100, // stagger delay
+  });
 
   const HeaderCards = [
     {
@@ -27,15 +44,17 @@ export default function HeroCards() {
   ];
 
   return (
-    <div className="w-full bg-[#FAFAFA] pb-5 shadow">
-
-      <div className="mx-auto flex w-full -translate-y-14 flex-row flex-wrap justify-center gap-x-5 
-      gap-y-5 bg-transparent lg:w-[90%]  2xl:w-4/5">
+    <div className="w-full bg-[#FAFAFA] pb-5 shadow" >
+      <div
+        className="mx-auto flex w-full -translate-y-14 flex-row flex-wrap justify-center gap-x-5 
+      gap-y-5 bg-transparent lg:w-[90%]  2xl:w-4/5"
+      >
         {HeaderCards.map((elm, index) => (
           <div
             key={index}
             className="flex basis-[40%] flex-col items-center gap-y-1 rounded-lg border-[1px]
-             bg-white py-3 text-center  sm:basis-1/3 lg:basis-1/5"
+             bg-white py-3 text-center sm:basis-1/3 lg:basis-1/5"
+            {...getAOSProps(index)}
           >
             <div>
               <img src={elm.img} className="object-cover" alt={elm.heading} />
@@ -43,8 +62,10 @@ export default function HeroCards() {
             <span className="ltr:font-PoppinsMedium rtl:font-TajawalMedium text-base text-[#444444]">
               {elm.heading}
             </span>
-            <p className="text-balance px-2 ltr:font-PoppinsLight  rtl:font-TajawalRegular
-             text-xs text-[#444444] sm:text-sm">
+            <p
+              className="text-balance px-2 ltr:font-PoppinsLight rtl:font-TajawalRegular
+             text-xs text-[#444444] sm:text-sm"
+            >
               {elm.caption}
             </p>
           </div>

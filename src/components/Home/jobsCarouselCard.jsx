@@ -31,11 +31,11 @@ export default function JobsCarouselCard({ job }) {
         <span className="truncate pe-4 text-base leading-none text-[#3B235D] ltr:font-PoppinsMedium rtl:font-TajawalMedium">
           {job?.jobSkills
             ? job?.jobSkills.map((skill, index) => (
-                <span key={index}>
-                  {skill}
-                  {index < job?.jobSkills.length - 1 && ", "}
-                </span>
-              ))
+              <span key={index}>
+                {skill}
+                {index < job?.jobSkills.length - 1 && ", "}
+              </span>
+            ))
             : ""}
         </span>
 

@@ -5,14 +5,17 @@ import { LiaArrowCircleLeftSolid } from "react-icons/lia";
 import CompanyCard from './CompanyCard';
 import JobCard from '../jobs/JobCard';
 import Pagination from '@mui/material/Pagination';
+import { useTranslation } from 'react-i18next';
 
 const CompaniesSection = () => {
   const dispatch = useDispatch();
+  const { i18n } = useTranslation();
 
   const [showRelatedJobs, setShowRelatedJobs] = useState(false);
   const [companyName, setCompanyName] = useState('');
   const [jobsCurrentPage, setJobsCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  const isRtl = i18n.dir(i18n.language) === 'rtl';
 
   const {
     companies,
@@ -81,6 +84,11 @@ const CompaniesSection = () => {
               page={currentPage}
               onChange={handleCompaniesPageChange}
               shape="rounded"
+              sx={{
+                '& .MuiPaginationItem-previousNext': {
+                  transform: isRtl ? 'rotate(180deg)' : 'none', // Rotate arrows for RTL
+                }
+              }}
             />
           )}
         </div>
@@ -90,7 +98,7 @@ const CompaniesSection = () => {
         <div>
           <button onClick={handleGoBack} className="py-2 mb-4">
             <LiaArrowCircleLeftSolid
-              className="scale-75 md:scale-100"
+              className="scale-75 md:scale-100 rtl:rotate-180"
               color="#3B235D"
               size={35}
             />
@@ -108,6 +116,11 @@ const CompaniesSection = () => {
                 page={jobsCurrentPage}
                 onChange={handleJobsPageChange}
                 shape="rounded"
+                sx={{
+                  '& .MuiPaginationItem-previousNext': {
+                    transform: isRtl ? 'rotate(180deg)' : 'none', // Rotate arrows for RTL
+                  }
+                }}
               />
             )}
           </div>

@@ -2,12 +2,28 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { setFilter } from "../../redux/slices/jobsSlice";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function Categories() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [hoveredSkill, setHoveredSkill] = useState(null);
+
+  // Initialize AOS when component mounts
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+  }, []);
+
+  // Helper function to provide AOS attributes
+  const getAOSProps = (index) => ({
+    "data-aos": "zoom-out-up",
+    "data-aos-delay": index * 100,
+  });
 
   const languages = [
     { language: "JavaScript", value: "javascript", src: "/assets/languages/js.png" },
@@ -36,8 +52,8 @@ export default function Categories() {
             onMouseEnter={() => setHoveredSkill(elm.value)}
             onMouseLeave={() => setHoveredSkill(null)}
             className={`flex flex-col items-center justify-end text-inherit !no-underline xs:w-1/4 lg:w-auto transition-all duration-300
-              ${hoveredSkill && hoveredSkill !== elm.value ? "opacity-45" : "opacity-100"}
-    `}
+              ${hoveredSkill && hoveredSkill !== elm.value ? "opacity-45" : "opacity-100"}`}
+            {...getAOSProps(i)}
           >
             <img
               src={elm.src}

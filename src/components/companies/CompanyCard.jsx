@@ -82,7 +82,7 @@ export default function CompanyCard({ company, handleShowRelatedJobs }) {
           >
             View related jobs ( {relatedJobs.length} )
           </p>
-          <LiaArrowCircleRightSolid color='#3B235D' className="scale-75 -translate-x-2  md:-translate-x-1  md:scale-100" size={25} />
+          <LiaArrowCircleRightSolid color='#3B235D' className="scale-75 -translate-x-2  md:-translate-x-1  md:scale-100 rtl:rotate-180" size={25} />
         </div>
 
         <hr className="my-2 border-[1px] border-black" />
