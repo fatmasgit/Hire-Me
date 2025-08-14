@@ -22,7 +22,7 @@ It provides **job listings with advanced filtering**, candidate profile manageme
 - Sign up with **email/password** or **Google Authentication**.
 
 ### For Employers
-- Post new jobs with detailed requirements.
+- Post new jobs with detailed requirements including descriptions, skills, salary range, and company details.
 - Manage posted jobs and applicants in real time.
 - Store job-related files securely (descriptions, images, PDFs).
 - Sign up with **email/password** or **Google Authentication**.
