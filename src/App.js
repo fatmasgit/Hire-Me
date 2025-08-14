@@ -22,7 +22,7 @@ import EmployersLogInPage from "./pages/EmployersLogIn";
 import CandidateProfilePage from "./pages/CandidateProfile";
 import SendOtp from "./pages/SendOtp";
 import OtpVerify from "./pages/OtpVerify";
-import PageNotFound from "./components/pageNotFound/PageNotFound";
+import PageNotFound from "./components/pageNotFound/pageNotFound";
 
 import store from "./store";
 import "./localization/i18n";
