@@ -6,6 +6,7 @@ import { fetchCandidateByUid, updateProfile } from "../../redux/slices/profileSl
 import LangButton from "../nav/ArEnButton";
 import { Link } from "react-router-dom";
 import CandidateForm from "../shared/CandidateForm";
+import CircularLoader from "../shared/Loading"
 
 export default function Profile() {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ export default function Profile() {
             isSubmitting={loading}
           />
         ) : (
-          <p className="text-center py-4 ">{t("loadingProfile")}...</p>
+          <p className="text-center py-4 "><CircularLoader /></p>
         )}
       </div>
     </div>

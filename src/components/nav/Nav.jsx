@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Options } from "./NavDropdown";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LangButton from "./ArEnButton";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import UserData from './UserData'
 export default function Nav() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -23,8 +23,7 @@ export default function Nav() {
     });
 
     return () => unsubscribe();
-  }, [dispatch]);
-
+  }, [dispatch, location.pathname]); // runs every time pathname changes
 
 
   const { authenticated, role, userDocument, loading, error } = useSelector(

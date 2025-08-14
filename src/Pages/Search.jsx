@@ -15,8 +15,8 @@ export default function SearchPage() {
     dispatch(fetchJobs());
   }, [dispatch, filters]);
 
-  console.log("data...");
-  console.log(filters);
+  //console.log("data...");
+  //console.log(filters);
 
   const displayedData = data;
 

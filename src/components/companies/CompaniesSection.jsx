@@ -6,6 +6,7 @@ import CompanyCard from './CompanyCard';
 import JobCard from '../jobs/JobCard';
 import Pagination from '@mui/material/Pagination';
 import { useTranslation } from 'react-i18next';
+import CircularLoader from "../shared/Loading"
 
 const CompaniesSection = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const CompaniesSection = () => {
     setJobsCurrentPage(value);
   };
 
-  if (loadingCompanies) return <div>Loading companies...</div>;
+  if (loadingCompanies) return <div> <CircularLoader /></div>;
   if (error) return <div>Error: {error}</div>;
 
 

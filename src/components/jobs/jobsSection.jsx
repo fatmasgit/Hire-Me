@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import JobCard from "./JobCard";
 import { Pagination, Box } from '@mui/material';
 import { useTranslation } from "react-i18next";
-
+import CircularLoader from '../shared/Loading'
 export default function JobsSection({ data, status, error }) {
   const { i18n } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +23,7 @@ export default function JobsSection({ data, status, error }) {
   // console.log(data)
   return (
     <div className="flex flex-col gap-y-[1.6rem] items-center">
-      {status === "loading" && <p>Loading...</p>}
+      {status === "loading" && <CircularLoader />}
       {status === "failed" && <p>Error: {error}</p>}
       {status === "succeeded" && (
         <>
