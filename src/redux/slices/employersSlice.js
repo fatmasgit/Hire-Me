@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -6,16 +6,35 @@ import {
   signInWithPopup,
   linkWithPopup,
   signOut,
-} from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
+} from "firebase/auth";
+import { doc, setDoc, getDoc, collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../../Firebase/firebaseConfig";
-import { supabase } from '../../SuperBase/SuperBaseConfig';
+import { supabase } from "../../SuperBase/SuperBaseConfig";
+
+// Helper: map Firebase error codes to friendly messages
+const getFriendlyErrorMessage = (error) => {
+  const errorMap = {
+    "auth/email-already-in-use": "Account already in use",
+    "auth/invalid-email": "Invalid email address",
+    "auth/weak-password": "Password is too weak",
+    "auth/user-not-found": "No account found with this email",
+    "auth/wrong-password": "Incorrect password",
+  };
+  return errorMap[error.code] || error.message;
+};
 
 export const signupUser = createAsyncThunk(
-  'employersSignUp/signupUser',
-  async ({ name, email, profession, password, profileImage }, { rejectWithValue }) => {
+  "employersSignUp/signupUser",
+  async (
+    { name, email, profession, password, profileImage },
+    { rejectWithValue },
+  ) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       const { uid } = userCredential.user;
 
       const provider = new GoogleAuthProvider();
@@ -23,28 +42,32 @@ export const signupUser = createAsyncThunk(
         await linkWithPopup(userCredential.user, provider);
       } catch (error) {
         if (
-          error.code !== 'auth/popup-closed-by-user' &&
-          error.code !== 'auth/provider-already-linked'
+          error.code !== "auth/popup-closed-by-user" &&
+          error.code !== "auth/provider-already-linked"
         ) {
-          throw new Error('Google linking failed: ' + error.message);
+          throw new Error("Google linking failed: " + error.message);
         }
       }
 
       let imageUrl = null;
       if (profileImage) {
-        const ext = profileImage.name.split('.').pop();
+        const ext = profileImage.name.split(".").pop();
         const filePath = `Employers-images/${Date.now()}.${ext}`;
-        const { error } = await supabase.storage.from('Employers').upload(filePath, profileImage, {
-          cacheControl: '3600',
-          upsert: false
-        });
+        const { error } = await supabase.storage
+          .from("Employers")
+          .upload(filePath, profileImage, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
         if (error) throw new Error(`Image upload failed: ${error.message}`);
-        const { data } = supabase.storage.from('Employers').getPublicUrl(filePath);
+        const { data } = supabase.storage
+          .from("Employers")
+          .getPublicUrl(filePath);
         imageUrl = data.publicUrl;
       }
 
-      const employersDoc = doc(db, 'employers', uid);
+      const employersDoc = doc(db, "employers", uid);
       await setDoc(employersDoc, { name, email, profession, imageUrl });
 
       return {
@@ -53,71 +76,75 @@ export const signupUser = createAsyncThunk(
         email,
         profession,
         imageUrl,
-        role: 'employer'
+        role: "employer",
       };
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getFriendlyErrorMessage(error));
     }
-  }
+  },
 );
 
 export const loginUser = createAsyncThunk(
-  'employersSignUp/loginUser',
+  "employersSignUp/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       const { uid } = userCredential.user;
 
-      const employersDoc = doc(db, 'employers', uid);
+      const employersDoc = doc(db, "employers", uid);
       const docSnap = await getDoc(employersDoc);
 
       if (!docSnap.exists()) {
         await signOut(auth);
-        throw new Error('No employer profile found for this email.');
+        throw new Error("No employer profile found for this email.");
       }
 
       return {
         uid,
-        role: 'employer',
-        message: 'Login successful!',
-        ...docSnap.data()
+        role: "employer",
+        message: "Login successful!",
+        ...docSnap.data(),
       };
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getFriendlyErrorMessage(error));
     }
-  }
+  },
 );
 
 export const loginWithGoogle = createAsyncThunk(
-  'employersSignUp/loginWithGoogle',
+  "employersSignUp/loginWithGoogle",
   async (_, { rejectWithValue }) => {
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
       const { uid, email, displayName } = userCredential.user;
 
-      const docSnap = await getDoc(doc(db, 'employers', uid));
+      const docSnap = await getDoc(doc(db, "employers", uid));
       if (!docSnap.exists()) {
         await signOut(auth);
-        throw new Error('No employer profile found for this Google account.');
+        throw new Error("No employer profile found for this Google account.");
       }
 
       return {
         uid,
         email,
         displayName,
-        role: 'employer',
-        message: 'Login successful!',
-        ...docSnap.data()
+        role: "employer",
+        message: "Login successful!",
+        ...docSnap.data(),
       };
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getFriendlyErrorMessage(error));
     }
-  }
+  },
 );
 
 export const addJobToFirestore = createAsyncThunk(
-  'employersSignUp/addJobToFirestore',
+  "employersSignUp/addJobToFirestore",
   async (
     {
       jobTitle,
@@ -131,27 +158,31 @@ export const addJobToFirestore = createAsyncThunk(
       salaryCurrency,
       jobDescription,
       jobRequirements,
-      jobImage
+      jobImage,
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     const currentUser = auth.currentUser;
-    if (!currentUser) return rejectWithValue('No user is authenticated');
+    if (!currentUser) return rejectWithValue("No user is authenticated");
     const { uid } = currentUser;
 
     try {
       let jobImageUrl = null;
 
       if (jobImage) {
-        const ext = jobImage.name.split('.').pop();
+        const ext = jobImage.name.split(".").pop();
         const filePath = `Job-images/${Date.now()}.${ext}`;
-        const { error } = await supabase.storage.from('Employers').upload(filePath, jobImage, {
-          cacheControl: '3600',
-          upsert: false
-        });
+        const { error } = await supabase.storage
+          .from("Employers")
+          .upload(filePath, jobImage, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
         if (error) throw new Error(`Image upload failed: ${error.message}`);
-        const { data } = supabase.storage.from('Employers').getPublicUrl(filePath);
+        const { data } = supabase.storage
+          .from("Employers")
+          .getPublicUrl(filePath);
         jobImageUrl = data.publicUrl;
       }
 
@@ -163,24 +194,24 @@ export const addJobToFirestore = createAsyncThunk(
         companyName: companyName.toLowerCase(),
         jobLocation: {
           country: jobCountry.toLowerCase(),
-          city: jobCity.toLowerCase()
+          city: jobCity.toLowerCase(),
         },
         salaryRange: { min: minSalary, max: maxSalary },
         jobDescription,
         jobRequirements,
         companyImage: jobImageUrl,
-        salaryCurrency: salaryCurrency.toLowerCase()
+        salaryCurrency: salaryCurrency.toLowerCase(),
       };
 
-      await addDoc(collection(db, 'jobs'), newJob);
+      await addDoc(collection(db, "jobs"), newJob);
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const employersSignUpSlice = createSlice({
-  name: 'employersSignUp',
+  name: "employersSignUp",
   initialState: {
     user: null,
     role: null,
@@ -190,7 +221,7 @@ const employersSignUpSlice = createSlice({
     message: null,
     loading: null,
     jobLoading: false,
-    jobError: null
+    jobError: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -251,7 +282,7 @@ const employersSignUpSlice = createSlice({
         state.jobLoading = false;
         state.jobError = action.payload;
       });
-  }
+  },
 });
 
 export default employersSignUpSlice.reducer;

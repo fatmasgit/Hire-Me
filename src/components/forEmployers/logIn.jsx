@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, loginWithGoogle } from "../../redux/slices/employersSlice";
-import { FaEnvelope, FaLock ,FaUnlock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUnlock } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
-   const navigate =useNavigate()
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
 
 
@@ -44,7 +44,7 @@ const LoginForm = () => {
 
         setTimeout(() => {
           navigate('/');
-        }, 3500); 
+        }, 3500);
       } catch (err) {
         toast.error(`${t("loginFailed")}: ${err || t("unknownError")}`, {
           position: "top-center",
@@ -64,7 +64,7 @@ const LoginForm = () => {
 
       setTimeout(() => {
         navigate('/');
-      }, 4000); 
+      }, 4000);
     } catch (err) {
       toast.error(`${t("googleLoginFailed")}: ${err || t("unknownError")}`, {
         position: "top-center",
@@ -105,7 +105,7 @@ const LoginForm = () => {
             <input
               id="password"
               name="password"
-              type={showPassword ? 'text' :'password' } 
+              type={showPassword ? 'text' : 'password'}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -114,9 +114,9 @@ const LoginForm = () => {
             />
             <div onClick={() => setShowPassword((prev) => !prev)}
               className="absolute  cursor-pointer ltr:left-4 rtl:right-4 top-1/2 transform -translate-y-1/2 text-[#3B235D]">
-            
-            {showPassword ?  < FaUnlock size={16} /> :   < FaLock size={16} />}
-            
+
+              {showPassword ? < FaUnlock size={16} /> : < FaLock size={16} />}
+
             </div>
           </div>
           {formik.touched.password && formik.errors.password && (
@@ -143,9 +143,9 @@ const LoginForm = () => {
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className={`w-full  ltr:font-PoppinsMedium rtl:font-TajawalBold flex justify-center border items-center gap-x-1 py-2 mt-2 text-[#3B235D]  rounded-full ${googleLoading
-                ? "cursor-not-allowed"
-                : "bg-white transition duration-300"
+            className={`w-full  ltr:font-PoppinsMedium rtl:font-TajawalBold flex rtl:flex-row-reverse justify-center border items-center gap-x-1 py-2 mt-2 text-[#3B235D]  rounded-full ${googleLoading
+              ? "cursor-not-allowed"
+              : "bg-white transition duration-300"
               }`}
           >
             <FcGoogle size={22} />

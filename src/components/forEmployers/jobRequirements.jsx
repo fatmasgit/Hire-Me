@@ -16,7 +16,6 @@ const JobRequirements = ({ value, onChange, name }) => {
         value={editorContent}
         onEditorChange={handleEditorChange}
         init={{
-          height: 180,
           menubar: false,
           skin: "bootstrap",
           content_css: "default",

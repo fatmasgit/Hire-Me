@@ -6,16 +6,23 @@ import "swiper/css/effect-cube";
 import "swiper/css/pagination";
 import TopRatedJobs from "./topRatedJobs";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchJobs, fetchAllJobs } from "../../redux/slices/jobsSlice";
 
 const TopRatedCarousel = ({ filter }) => {
   const { i18n } = useTranslation();
   const direction = i18n.dir(i18n.language);
-  const { data, status, error } = useSelector((state) => state.jobs);
+  const dispatch = useDispatch();
+  const { allJobs, status, error } = useSelector((state) => state.jobs);
+
+  useEffect(() => {
+    dispatch(fetchAllJobs());
+  }, [dispatch]);
+
 
 
   // getting a jobs of different cities
-  const distinctCities = data.reduce((acc, item) => {
+  const distinctCities = allJobs.reduce((acc, item) => {
     if (acc.length >= 4) return acc;
     if (!acc.some((city) => city.jobLocation.city === item.jobLocation.city)) {
       acc.push(item);
@@ -31,7 +38,7 @@ const TopRatedCarousel = ({ filter }) => {
   return (
     <div className="w-full " dir={direction}>
       <Swiper
-        key={distinctCities.length} // ensures re-init when data changes
+        key={distinctCities.length} // ensures re-init when allJobs changes
         dir={direction}
         effect="cube"
         modules={[EffectCube, Autoplay, Pagination]}

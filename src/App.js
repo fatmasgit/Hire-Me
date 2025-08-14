@@ -16,7 +16,7 @@ import BlogPage from "./Pages/BlogPage";
 import ArticlePage from "./Pages/ArticlePage";
 import AboutUsPage from "./Pages/AboutUs";
 import ContactUs from "./components/ContactUs/ContactUs";
-import PostJob from "./components/forEmployers/PostJob";
+import PostJobPage from "./Pages/PostJob";
 import EmployersSignupForm from "./Pages/employersSignUp";
 import EmployersLogInForm from "./Pages/employersLogIn";
 import CandidateProfile from "./Pages/candidateProfile";
@@ -34,7 +34,10 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "Jobs", element: <RandomJobsPage /> },
-      { path: "/Jobs/filter/:filterType/:filterValue", element: <RandomJobsPage /> },
+      {
+        path: "/Jobs/filter/:filterType/:filterValue",
+        element: <RandomJobsPage />,
+      },
       { path: "Companies", element: <RandomCompaniesPage /> },
       { path: "Search", element: <SearchPage /> },
       { path: "Blog", element: <BlogPage /> },
@@ -43,7 +46,7 @@ const router = createBrowserRouter([
       { path: "jobs/:id/:title", element: <JobDetailsPage /> },
       { path: "Companies/:id/:name", element: <CompanyDetailsPage /> },
       { path: "Article/:id", element: <ArticlePage /> },
-      { path: "postJob", element: <PostJob /> },
+      { path: "postJob", element: <PostJobPage /> },
     ],
   },
   { path: "SignUp", element: <CandidateSignUpPage /> },

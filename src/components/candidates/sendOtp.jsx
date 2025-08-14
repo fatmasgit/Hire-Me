@@ -5,14 +5,14 @@ import { Navigate, useNavigate } from "react-router-dom";
 const OTPRequestComponent = () => {
   const [account, setAccount] = useState("");
   const [error, setError] = useState("");
-  const navigate =useNavigate()
+  const navigate = useNavigate()
 
   const handleSendOTP = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(account)) {
       setError("Please enter a valid email address.");
     } else {
-      setError(""); 
+      setError("");
       navigate('/verifyOtp')
     }
   };
@@ -21,7 +21,7 @@ const OTPRequestComponent = () => {
     <div className="flex h-screen w-full items-center justify-center bg-[#b2afaf]">
       <div className="flex w-[20rem] flex-col items-center justify-start gap-y-3 rounded-sm bg-white px-3 py-1">
         <div className="flex w-full flex-row items-center justify-between">
-          <p className="mx-auto pt-3 font-PoppinsMedium text-[1.3rem] text-[#444444]">
+          <p className="mx-auto pt-3 font-PoppinsMedium text-md text-[#444444]">
             Forget Password
           </p>
           <p className="!self-start text-[#444444] mt-2">
@@ -45,11 +45,10 @@ const OTPRequestComponent = () => {
 
         <button
           onClick={handleSendOTP}
-          className={`mb-3 mt-1 w-full rounded-sm p-2 font-PoppinsRegular text-white ${
-            account
-              ? "bg-[#3B235D] cursor-pointer"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
+          className={`mb-3 mt-1 w-full rounded-sm p-2 font-PoppinsRegular text-white ${account
+            ? "bg-[#3B235D] cursor-pointer"
+            : "bg-gray-400 cursor-not-allowed"
+            }`}
         >
           Send OTP
         </button>

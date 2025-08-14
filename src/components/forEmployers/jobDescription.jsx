@@ -16,7 +16,6 @@ const JobDescription = ({ value, onChange, name }) => {
         value={editorContent}
         onEditorChange={handleEditorChange}
         init={{
-          height: 180,
           menubar: false,
           skin: "bootstrap",      // ✅ Keep this for Bootstrap UI look
           content_css: "default", // ✅ Use default content styles

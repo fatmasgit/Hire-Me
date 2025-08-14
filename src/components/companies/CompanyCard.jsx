@@ -45,14 +45,14 @@ export default function CompanyCard({ company, handleShowRelatedJobs }) {
 
       <div className="w-[32%] rounded-lg bg-[#EAE8ED] pt-3">
         <img
-          className="mx-auto xs:h-[5rem] sm:h-[6rem] w-[85%] rounded-md object-cover"
+          className="mx-auto xs:h-20 sm:h-24 w-[85%] rounded-md object-cover"
           src={company?.image}
           alt={`${company?.name} logo`}
         />
 
-        <div className="mx-auto mb-1 mt-2.5 flex items-start justify-center gap-x-1 xs:w-[60%] md:w-full">
+        <div className="mx-auto mb-1 mt-2.5 flex items-start justify-center gap-x-1 xs:w-3/5 md:w-full">
           <GrLocation size={23} />
-          <p className="font-PoppinsRegular text-[#444444] xs:text-[0.8rem] md:text-sm">
+          <p className="font-PoppinsRegular text-[#444444] xs:text-sm md:text-sm">
             {company?.country}, {company?.city}
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function CompanyCard({ company, handleShowRelatedJobs }) {
           to={`/Companies/${company?.id}/${company?.name.replace(/\s+/g, "_")}`}
           className="w-fit xs:self-end"
         >
-          <button className="mt-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium text-[#3B235D] xs:h-[2rem] xs:text-[0.8rem] md:h-[2.3rem] md:text-sm">
+          <button className="mt-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium text-[#3B235D] xs:h-[2rem] xs:text-sm md:h-[2.3rem] md:text-sm">
             View Company
           </button>
         </Link>

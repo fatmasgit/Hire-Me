@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import HeroBackGround from "../components/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
-import TopRatedCarousel from "../components/jobs/TopRatedJobsCrousel";
 import CompaniesSection from "../components/companies/CompaniesSection";
 import { useTranslation } from "react-i18next";
 
@@ -14,10 +13,10 @@ export default function JobDetailsPage() {
 
       <HeroBackGround>
         <div className="flex h-full w-full flex-col items-center justify-center gap-y-3">
-        
-          <p className="flex items-center font-PoppinsRegular text-base text-white ">
-            {" "}
-            Home <IoIosArrowForward className="mx-2 md:mx-3  rtl:rotate-180 " /> Companies
+          <p className="flex items-center font-PoppinsRegular rtl:font-TajawalRegular text-base text-white">
+            {t("home")}
+            <IoIosArrowForward className="mx-2 md:mx-3 rtl:rotate-180 " />
+            {t("companies")}
           </p>
         </div>
       </HeroBackGround>
@@ -27,7 +26,7 @@ export default function JobDetailsPage() {
       {/*   */}
       <hr className="pt-4 text-transparent" />
 
-      
+
       {/* jobs section  */}
       <div className="w-full h-fit bg-[#FAFAFA]">
         {/* screens */}

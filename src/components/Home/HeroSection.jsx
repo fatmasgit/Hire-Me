@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import HeaderForm from "./HeaderForm";
+import HeroForm from "./HeroForm";
 
-export default function Hero() {
+export default function HeroSection() {
   const formattedNumber = new Intl.NumberFormat("ar-EG").format(1500);
   const { t, i18n } = useTranslation();
   const direction = i18n.dir(i18n.language);
@@ -17,7 +17,7 @@ export default function Hero() {
             {t("Jobs posted week ago")}
           </p>
 
-          <HeaderForm />
+          <HeroForm />
 
           <p className="text-center font-PoppinsLight text-white xs:w-5/6 xs:text-sm md:text-base lg:text-lg rtl:font-TajawalLight">
             <span className="font-PoppinsSemiBold rtl:font-TajawalMedium">

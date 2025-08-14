@@ -168,5 +168,11 @@
   "bachelorDegree": "Bachelor's Degree",
   "masterDegree": "Master's Degree",
   "doctorate": "Doctorate",
-  "other": "Other"
+  "other": "Other",
+  "jobsForDevelopers": "Jobs For Developers",
+  "Search for jobs...": "Search for jobs...",
+  "Search by title or skill...": "Search by title or skill...",
+  "title: flutter developer": "title: flutter developer",
+  "skill: react": "skill: react",
+  "skill: next": "skill: next"
 }

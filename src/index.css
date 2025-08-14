@@ -88,3 +88,6 @@ textarea:-webkit-autofill:active {
   box-shadow: 0 0 20px 20px transparent inset !important;
   -webkit-box-shadow: 0 0 20px 20px transparent inset !important;
 }
+.tox-tinymce {
+  height: 20rem !important;
+}

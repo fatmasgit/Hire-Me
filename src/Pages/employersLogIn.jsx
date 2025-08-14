@@ -14,11 +14,11 @@ const EmployersLogInForm = () => {
 
 
 
-{/**nav + logo */}
+            {/**nav + logo */}
             <div className="w-full flex  px-4 justify-between  items-start ">
                 <Link to="/" className="!no-underline">
                     <img
-                        className="  w-[8rem] lg:w-[9rem] object-contain  mb-3"
+                        className="  w-32 lg:w-36 object-contain  mb-3"
                         src="/assets/Logo/logo.png"
                     />
                 </Link>
@@ -28,7 +28,7 @@ const EmployersLogInForm = () => {
                         <button className="ltr:font-PoppinsMedium rtl:font-TajawalMedium  
                          rounded-md border-[1px] border-solid border-[#3B235D]  text-[#3B235D] 
                          !no-underline
-                     h-[1.8rem] w-[5rem] text-xs ">
+                     h-[1.8rem] w-20 text-xs ">
                             {t("signUp")}
                         </button>{" "}
                     </Link>
@@ -47,7 +47,7 @@ const EmployersLogInForm = () => {
                 </div>
 
 
-                <div className="bg-employers  xs:h-[20rem]  xs:w-full   md:w-1/2 lg:w-3/5  md:h-[25rem]  lg:h-[30rem]
+                <div className="bg-employers  xs:h-80  xs:w-full   md:w-1/2 lg:w-3/5  md:h-100  lg:h-[30rem]
                 my-auto  bg-contain  bg-no-repeat bg-center">
                 </div>
 

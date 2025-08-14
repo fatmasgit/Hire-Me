@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="bg-[#FAFAFA] py-5"></div>
 
       <div className="w-full bg-[#F0F2F9] py-5">
-        <div className="container xs:w-[90%] sm:w-[80%]">
+        <div className="container xs:w-11/12 sm:w-4/5">
           <Link to="/" className="!no-underline">
             <img
               className="w-[7rem] lg:w-[8rem] object-contain my-1"
@@ -32,19 +32,19 @@ export default function Footer() {
               <p className="ltr:font-PoppinsMedium  rtl:font-TajawalBold text-lg text-[#444444]">
                 {t("important_links")}
               </p>
-              <Link  to='/AboutUsPage'  className='!no-underline' >
+              <Link to='/AboutUsPage' className='!no-underline' >
                 <p className="ltr:font-PoppinsMedium  rtl:font-TajawalBold text-base text-[#3B235D]">
                   {t("about_us")}
                 </p>
               </Link>
 
-              <Link  to='ContactUsPage' className='!no-underline' >
+              <Link to='ContactUsPage' className='!no-underline' >
                 <p className="ltr:font-PoppinsMedium  rtl:font-TajawalBold text-base text-[#3B235D]">
                   {t("contact_us")}
                 </p>
               </Link>
 
-              <Link  to='/Blog' className='!no-underline'  >
+              <Link to='/Blog' className='!no-underline'  >
                 <p className="ltr:font-PoppinsMedium  rtl:font-TajawalBold text-base text-[#3B235D]">
                   {t("blog")}
                 </p>
@@ -60,12 +60,12 @@ export default function Footer() {
               <div className="flex gap-2 py-2 xs:flex-col lg:flex-row">
                 <img
                   className="h-[2rem] object-contain"
-                  src="/assets/image/apple.png"
+                  src="/assets/images/apple.png"
                   alt="Apple Store"
                 />
                 <img
                   className="h-[2rem] object-contain"
-                  src="/assets/image/android.png"
+                  src="/assets/images/android.png"
                   alt="Google Play Store"
                 />
               </div>

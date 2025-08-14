@@ -6,9 +6,6 @@ import { signupCandidate } from "../../redux/slices/candidatesSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LangButton from "../nav/arEnButton"
-
-
-//
 import CandidateForm from "../Shared/CandidateForm";
 
 

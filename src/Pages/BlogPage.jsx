@@ -2,19 +2,19 @@ import React from "react";
 import HeroBackGround from "../components/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
 import BlogData from "../components/Blog/blogData";
+import { useTranslation } from "react-i18next";
 
 export default function BlogPage() {
+  const { t, i18n } = useTranslation();
+
   return (
     <div className="bg-[#FAFAFA]">
       <HeroBackGround>
         <div className="flex h-full w-full flex-col items-center justify-center gap-y-3">
-          <p className="font-PoppinsRegular text-white xs:text-[1.3rem] 
-           md:text-[1.9rem] lg:text-[2.5rem]">
-            64 Internships For Developers
-          </p>
-          <p className="flex items-center font-PoppinsRegular text-[1.1rem] text-white">
-            {" "}
-            Home <IoIosArrowForward className="xs:mx-2 md:mx-3" /> Blog
+          <p className="flex items-center font-PoppinsRegular rtl:font-TajawalRegular text-[1.1rem] text-white">
+            {t("home")}
+            <IoIosArrowForward className="xs:mx-2 md:mx-3 rtl:rotate-180" />
+            {t("blog")}
           </p>
         </div>
       </HeroBackGround>

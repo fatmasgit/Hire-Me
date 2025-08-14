@@ -169,5 +169,11 @@
   "bachelorDegree": "بكالوريوس",
   "masterDegree": "ماجستير",
   "doctorate": "دكتوراه",
-  "other": "أخرى"
+  "other": "أخرى",
+  "jobsForDevelopers": "وظائف للمطورين",
+  "Search for jobs...": "ابحث عن وظائف...",
+  "Search by title or skill...": "ابحث بالمسمى الوظيفي أو المهارة...",
+  "title: flutter developer": "المسمى: مطور flutter",
+  "skill: react": "المهارة: React",
+  "skill: next": "المهارة: Next"
 }

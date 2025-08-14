@@ -10,6 +10,7 @@ import PasswordFields from "./PasswordFields";
 import { BsExclamationCircle } from "react-icons/bs";
 import { getCandidateValidationSchema } from "./YupValidation";
 
+
 export default function CandidateForm({
     initialValues,
     onSubmit,
