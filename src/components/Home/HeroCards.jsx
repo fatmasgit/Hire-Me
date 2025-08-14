@@ -30,7 +30,7 @@ export default function HeroCards() {
     <div className="w-full bg-[#FAFAFA] pb-5 shadow">
 
       <div className="mx-auto flex w-full -translate-y-14 flex-row flex-wrap justify-center gap-x-5 
-      gap-y-5 bg-transparent lg:w-[90%]  2xl:w-[80%]">
+      gap-y-5 bg-transparent lg:w-[90%]  2xl:w-4/5">
         {HeaderCards.map((elm, index) => (
           <div
             key={index}

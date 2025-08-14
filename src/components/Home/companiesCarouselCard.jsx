@@ -39,7 +39,7 @@ export default function Company({ companyInfo }) {
           className="!no-underline"
         >
           <div className="flex cursor-pointer items-center">
-            <p className="font-PoppinsSemiBold text-[#3B235D] xs:text-base">
+            <p className="font-PoppinsSemiBold rtl:font-TajawalBold text-[#3B235D] xs:text-base">
               {companyInfo.jobs} {t("jobs")}
             </p>
             <RiArrowRightDoubleLine

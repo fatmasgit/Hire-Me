@@ -1,7 +1,7 @@
 import React from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
-import AboutUs from "../components/AboutUs/AboutUs";
+import AboutUs from "../components/aboutUs/AboutUs";
 import { useTranslation } from "react-i18next";
 
 export default function AboutUsPage() {

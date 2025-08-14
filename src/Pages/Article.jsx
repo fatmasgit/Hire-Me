@@ -1,10 +1,10 @@
 import React from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
-import articles from "../components/Blog/articles";
-import ArticleCard from "../components/Blog/articleCard";
+import articles from "../components/blog/articles";
+import ArticleCard from "../components/blog/ArticleCard";
 import { useParams } from "react-router-dom";
-import usePageViewTracker from "../components/Blog/PageViewsCustomHook";
+import usePageViewTracker from "../components/blog/PageViewsCustomHook";
 
 export default function ArticlePage() {
   const pageViews = usePageViewTracker();

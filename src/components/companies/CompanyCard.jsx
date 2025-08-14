@@ -8,9 +8,11 @@ import { TfiWorld } from "react-icons/tfi";
 import { GoMail } from "react-icons/go";
 import { SlPhone } from "react-icons/sl";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 export default function CompanyCard({ company, handleShowRelatedJobs }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { companiesWithJobs, loadingJobs, error } = useSelector((state) => state.companies);
   const relatedJobs = companiesWithJobs[company?.name] || [];
@@ -111,8 +113,8 @@ export default function CompanyCard({ company, handleShowRelatedJobs }) {
           to={`/Companies/${company?.id}/${company?.name.replace(/\s+/g, "_")}`}
           className="w-fit xs:self-end"
         >
-          <button className="mt-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium text-[#3B235D] xs:h-[2rem] xs:text-sm md:h-[2.3rem] md:text-sm">
-            View Company
+          <button className="mt-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium  rtl:font-TajawalBold text-[#3B235D] xs:h-[2rem] xs:text-sm md:h-[2.3rem] md:text-sm">
+            {t("View Company")}
           </button>
         </Link>
       </div>

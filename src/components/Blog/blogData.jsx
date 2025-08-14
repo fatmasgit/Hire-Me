@@ -1,6 +1,6 @@
 import React from "react";
 import articles from "./articles";
-import ArticleCard from "./articleCard";
+import ArticleCard from "./ArticleCard";
 import { Link } from "react-router-dom";
 
 export default function BlogData() {

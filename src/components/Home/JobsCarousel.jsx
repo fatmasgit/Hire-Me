@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import JobsCarouselCard from "./jobsCarouselCard";
+import JobsCarouselCard from "./JobsCarouselCard";
 import { fetchJobs, fetchAllJobs } from "../../redux/slices/jobsSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

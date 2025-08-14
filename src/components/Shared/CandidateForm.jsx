@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import { useTranslation } from "react-i18next";
-import Date from "./datePicker";
-import YearsDate from "./yearsDatePicker";
-import SelectDegreeField from "./degreeSelect";
-import FileUpload from "./cv";
-import ProfilePhotoUpload from "./imgReading";
+import Date from "./DatePicker";
+import YearsDate from "./YearsDatePicker";
+import SelectDegreeField from "./DegreeSelect";
+import FileUpload from "./Cv";
+import ProfilePhotoUpload from "./ProfilePhotoUpload";
 import PasswordFields from "./PasswordFields";
 import { BsExclamationCircle } from "react-icons/bs";
 import { getCandidateValidationSchema } from "./YupValidation";

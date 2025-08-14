@@ -8,7 +8,7 @@ import {
   where,
   documentId,
 } from "firebase/firestore";
-import { db } from "../../Firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 
 // Helper: Convert string to Title Case (optional)
 function toTitleCase(str) {

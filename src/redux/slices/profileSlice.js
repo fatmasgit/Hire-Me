@@ -1,47 +1,40 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../../Firebase/firebaseConfig';
-import { supabase } from '../../SuperBase/SuperBaseConfig';
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase/firebaseConfig";
+import { supabase } from "../../superBase/superBaseConfig";
 
 // Thunk to fetch candidate data by UID (from auth.currentUser)
 export const fetchCandidateByUid = createAsyncThunk(
-  'candidateProfile/fetchCandidateByUid',
+  "candidateProfile/fetchCandidateByUid",
   async (_, { rejectWithValue }) => {
     const user = auth.currentUser;
 
     if (!user) {
-      return rejectWithValue('No user is authenticated');
-
+      return rejectWithValue("No user is authenticated");
     }
 
     //console.log('User authenticated:', user.uid);
 
-    const candidateDoc = doc(db, 'candidates', user.uid);
+    const candidateDoc = doc(db, "candidates", user.uid);
     try {
       const docSnapshot = await getDoc(candidateDoc);
-
 
       if (docSnapshot.exists()) {
         //   console.log('Candidate data found:', docSnapshot.data());
         return { id: docSnapshot.id, ...docSnapshot.data() };
       } else {
-        return rejectWithValue('Candidate not found');
+        return rejectWithValue("Candidate not found");
       }
     } catch (error) {
-      return rejectWithValue(error.message || 'An error occurred while fetching data');
-
+      return rejectWithValue(
+        error.message || "An error occurred while fetching data",
+      );
     }
-  }
+  },
 );
 
-
-
-
-
-
 export const updateProfile = createAsyncThunk(
-  'candidateProfile/updateProfile',
+  "candidateProfile/updateProfile",
   async (
     {
       firstName,
@@ -54,9 +47,9 @@ export const updateProfile = createAsyncThunk(
       educationLevel,
       graduationYear,
       profilePhoto,
-      cv
+      cv,
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     const { uid } = auth.currentUser;
 
@@ -66,26 +59,33 @@ export const updateProfile = createAsyncThunk(
 
       if (isFile) {
         // If it's a file, process the upload
-        const fileExt = profilePhoto.name.split('.').pop();
+        const fileExt = profilePhoto.name.split(".").pop();
         const fileName = `${Date.now()}.${fileExt}`;
         const filePath = `candidate-images/${fileName}`;
 
         try {
           // Upload profile photo to Supabase
           const { error: imageUploadError } = await supabase.storage
-            .from('Candidate')
-            .upload(filePath, profilePhoto, { cacheControl: '3600', upsert: false });
+            .from("Candidate")
+            .upload(filePath, profilePhoto, {
+              cacheControl: "3600",
+              upsert: false,
+            });
 
           if (imageUploadError) {
-            return rejectWithValue(`Image upload failed: ${imageUploadError.message}`);
+            return rejectWithValue(
+              `Image upload failed: ${imageUploadError.message}`,
+            );
           }
 
           const { data: publicUrlData, error: imageUrlError } = supabase.storage
-            .from('Candidate')
+            .from("Candidate")
             .getPublicUrl(filePath);
 
           if (imageUrlError) {
-            return rejectWithValue(`Failed to get image URL: ${imageUrlError.message}`);
+            return rejectWithValue(
+              `Failed to get image URL: ${imageUrlError.message}`,
+            );
           }
 
           imageUrl = publicUrlData.publicUrl;
@@ -102,26 +102,30 @@ export const updateProfile = createAsyncThunk(
     if (cv) {
       const isFile = cv instanceof File;
       if (isFile) {
-        const fileExt = cv.name.split('.').pop();
+        const fileExt = cv.name.split(".").pop();
         const fileName = `${Date.now()}-cv.${fileExt}`;
         const filePath = `candidate-cvs/${fileName}`;
 
         try {
           // Upload CV to Supabase
           const { error: cvUploadError } = await supabase.storage
-            .from('Candidate')
-            .upload(filePath, cv, { cacheControl: '3600', upsert: false });
+            .from("Candidate")
+            .upload(filePath, cv, { cacheControl: "3600", upsert: false });
 
           if (cvUploadError) {
-            return rejectWithValue(`CV upload failed: ${cvUploadError.message}`);
+            return rejectWithValue(
+              `CV upload failed: ${cvUploadError.message}`,
+            );
           }
 
           const { data: cvUrlData, error: cvUrlError } = supabase.storage
-            .from('Candidate')
+            .from("Candidate")
             .getPublicUrl(filePath);
 
           if (cvUrlError) {
-            return rejectWithValue(`Failed to get CV URL: ${cvUrlError.message}`);
+            return rejectWithValue(
+              `Failed to get CV URL: ${cvUrlError.message}`,
+            );
           }
 
           cvUrl = cvUrlData.publicUrl;
@@ -149,31 +153,26 @@ export const updateProfile = createAsyncThunk(
     };
 
     try {
-
-      const candidateDocRef = doc(db, 'candidates', uid);
+      const candidateDocRef = doc(db, "candidates", uid);
       await updateDoc(candidateDocRef, updatedValues);
-
 
       const docSnapshot = await getDoc(candidateDocRef);
 
-
       if (docSnapshot.exists()) {
         return { id: docSnapshot.id, ...docSnapshot.data() };
-
       } else {
-        return rejectWithValue('Candidate not found after update');
+        return rejectWithValue("Candidate not found after update");
       }
     } catch (error) {
-      return rejectWithValue(`Error updating Firestore document: ${error.message}`);
+      return rejectWithValue(
+        `Error updating Firestore document: ${error.message}`,
+      );
     }
-  }
+  },
 );
 
-
-
-
 const candidateProfileSlice = createSlice({
-  name: 'candidateProfile',
+  name: "candidateProfile",
   initialState: {
     candidate: null,
     loading: false,
@@ -211,6 +210,5 @@ const candidateProfileSlice = createSlice({
       });
   },
 });
-
 
 export default candidateProfileSlice.reducer;

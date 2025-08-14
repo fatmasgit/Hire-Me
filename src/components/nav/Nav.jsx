@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { Options } from "./navDropdown";
+import { Options } from "./NavDropdown";
 import { Link } from "react-router-dom";
-import LangButton from "./arEnButton";
+import LangButton from "./ArEnButton";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, logout } from "../../redux/slices/authSlice";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../Firebase/firebaseConfig";
-import UserData from './userData'
+import { auth } from "../../firebase/firebaseConfig";
+import UserData from './UserData'
 
 
 export default function Nav() {

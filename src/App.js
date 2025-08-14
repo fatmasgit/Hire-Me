@@ -3,26 +3,26 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import Home from "./Pages/HomePage";
-import RandomJobsPage from "./Pages/RandomJobs";
-import JobDetailsPage from "./Pages/JobDetails";
-import RandomCompaniesPage from "./Pages/RandomCompanies";
-import CompanyDetailsPage from "./Pages/CompanyDetails";
-import SearchPage from "./Pages/SearchPage";
-import AppNavigation from "./Pages/AppNavigation";
-import CandidateSignUpPage from "./Pages/candidateSignUpPage";
-import CandidateLogInPage from "./Pages/candidateLogInPage";
-import BlogPage from "./Pages/BlogPage";
-import ArticlePage from "./Pages/ArticlePage";
-import AboutUsPage from "./Pages/AboutUs";
-import ContactUs from "./components/ContactUs/ContactUs";
-import PostJobPage from "./Pages/PostJob";
-import EmployersSignupForm from "./Pages/employersSignUp";
-import EmployersLogInForm from "./Pages/employersLogIn";
-import CandidateProfile from "./Pages/candidateProfile";
-import OTPRequestComponent from "./components/candidates/sendOtp";
-import OtpVerify from "./components/candidates/OtpVerify";
-import PageNotFound from "./components/pageNotFound/pageNotFound";
+import Home from "./pages/Home";
+import JobsPage from "./pages/Jobs";
+import JobDetailsPage from "./pages/JobDetails";
+import CompaniesPage from "./pages/Companies";
+import CompanyDetailsPage from "./pages/CompanyDetails";
+import SearchPage from "./pages/Search";
+import AppLayout from "./appLayout/AppLayout";
+import CandidateSignUpPage from "./pages/CandidateSignUp";
+import CandidateLogInPage from "./pages/CandidateLogIn";
+import BlogPage from "./pages/Blog";
+import ArticlePage from "./pages/Article";
+import AboutUsPage from "./pages/AboutUs";
+import ContactUsPage from "./pages/ContactUs";
+import PostJobPage from "./pages/PostJob";
+import EmployersSignupPage from "./pages/EmployersSignUp";
+import EmployersLogInPage from "./pages/EmployersLogIn";
+import CandidateProfilePage from "./pages/CandidateProfile";
+import SendOtp from "./pages/SendOtp";
+import OtpVerify from "./pages/OtpVerify";
+import PageNotFound from "./components/pageNotFound/PageNotFound";
 
 import store from "./store";
 import "./localization/i18n";
@@ -30,19 +30,19 @@ import "./localization/i18n";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppNavigation />,
+    element: <AppLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: "Jobs", element: <RandomJobsPage /> },
+      { path: "Jobs", element: <JobsPage /> },
       {
         path: "/Jobs/filter/:filterType/:filterValue",
-        element: <RandomJobsPage />,
+        element: <JobsPage />,
       },
-      { path: "Companies", element: <RandomCompaniesPage /> },
+      { path: "Companies", element: <CompaniesPage /> },
       { path: "Search", element: <SearchPage /> },
       { path: "Blog", element: <BlogPage /> },
       { path: "AboutUsPage", element: <AboutUsPage /> },
-      { path: "ContactUsPage", element: <ContactUs /> },
+      { path: "ContactUsPage", element: <ContactUsPage /> },
       { path: "jobs/:id/:title", element: <JobDetailsPage /> },
       { path: "Companies/:id/:name", element: <CompanyDetailsPage /> },
       { path: "Article/:id", element: <ArticlePage /> },
@@ -51,10 +51,10 @@ const router = createBrowserRouter([
   },
   { path: "SignUp", element: <CandidateSignUpPage /> },
   { path: "LogIn", element: <CandidateLogInPage /> },
-  { path: "employers/SignUp", element: <EmployersSignupForm /> },
-  { path: "employers/logIn", element: <EmployersLogInForm /> },
-  { path: "profile", element: <CandidateProfile /> },
-  { path: "sendOtp", element: <OTPRequestComponent /> },
+  { path: "employers/SignUp", element: <EmployersSignupPage /> },
+  { path: "employers/logIn", element: <EmployersLogInPage /> },
+  { path: "profile", element: <CandidateProfilePage /> },
+  { path: "sendOtp", element: <SendOtp /> },
   { path: "verifyOtp", element: <OtpVerify /> },
   { path: "*", element: <PageNotFound /> },
 ]);

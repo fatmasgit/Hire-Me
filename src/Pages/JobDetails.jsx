@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
 import JobCard from "../components/jobs/JobCard";
 import JobData from "../components/jobs/JobData";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchJobById } from "../redux/slices/jobsSlice";
+import { useTranslation } from "react-i18next";
 
 
 
 export default function JobDetailsPage() {
+  const { t } = useTranslation();
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { selectedJob, status, error } = useSelector((state) => state.jobs);
@@ -46,23 +49,19 @@ export default function JobDetailsPage() {
   return (
     <div className="bg-[#FAFAFA]">
       <HeroBackGround>
-        <div className="flex h-full w-full flex-col items-center justify-center gap-y-1  lg:gap-y-2  ">
-          <p className="font-PoppinsRegular  text-white xs:text-base 
-          sm:text-lg md:text-xl  lg:text-2xl ">
-            {JobTitle}
+        <div className="flex h-full w-full flex-col items-center justify-center gap-y-1 lg:gap-y-2">
+          {/* Job Title */}
+          <p className="font-PoppinsRegular rtl:font-TajawalRegular  text-white xs:text-base sm:text-lg md:text-xl lg:text-2xl">
+            {t(JobTitle)}
           </p>
-          <p className="font-PoppinsRegular text-white   xs:text-base 
-          sm:text-lg md:text-xl  lg:text-2xl ">
-            {selectedJob?.jobSkills ?  selectedJob?.jobSkills.map((skill, index) => (
-              <span key={index}>
-                {skill}
-                {index < selectedJob?.jobSkills.length - 1 && ", "}
-              </span>
-            )) : ""}
-          </p>
-          <p className="mt-2 flex items-center font-PoppinsRegular text-base text-white md:text-lg">
-            Home <IoIosArrowForward className="xs:mx-2 md:mx-3" /> Jobs
-            <IoIosArrowForward className="xs:mx-2 md:mx-3" /> Job Details
+
+          {/* Breadcrumbs */}
+          <p className="mt-2 flex items-center font-PoppinsRegular rtl:font-TajawalRegular text-base text-white md:text-lg">
+            {t("home")}
+            <IoIosArrowForward className="xs:mx-2 md:mx-3 rtl:rotate-180" />
+            {t("Jobs")}
+            <IoIosArrowForward className="xs:mx-2 md:mx-3 rtl:rotate-180" />
+            {t("Job Details")}
           </p>
         </div>
       </HeroBackGround>
@@ -77,7 +76,7 @@ export default function JobDetailsPage() {
           {/* job card */}
           <div className="bg-[#FAFAFA] xs:w-full lg:w-[63%]">
             <JobCard job={selectedJob} />
-            <JobData  job={selectedJob}  />
+            <JobData job={selectedJob} />
           </div>
 
 

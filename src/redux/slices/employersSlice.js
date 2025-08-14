@@ -8,8 +8,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, collection, addDoc } from "firebase/firestore";
-import { auth, db } from "../../Firebase/firebaseConfig";
-import { supabase } from "../../SuperBase/SuperBaseConfig";
+import { auth, db } from "../../firebase/firebaseConfig";
+import { supabase } from "../../superBase/superBaseConfig";
 
 // Helper: map Firebase error codes to friendly messages
 const getFriendlyErrorMessage = (error) => {

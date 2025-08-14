@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { signupCandidate } from "../../redux/slices/candidatesSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LangButton from "../nav/arEnButton"
-import CandidateForm from "../Shared/CandidateForm";
+import LangButton from "../nav/ArEnButton"
+import CandidateForm from "../shared/CandidateForm";
 
 
 export default function SignUp() {

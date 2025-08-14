@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { setFilter, resetFilters } from "../../redux/slices/jobsSlice";
-import JobsSection from "../jobs/jobsSection";
+import JobsSection from "../jobs/JobsSection";
 import InputFilters from "../jobs/InputFilters";
 import SkillsFilter from "../jobs/SkillsFillter";
 import LocationsFilter from "../jobs/LocationsFilter";

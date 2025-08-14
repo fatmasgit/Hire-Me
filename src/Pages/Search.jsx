@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchJobs,
 } from "../redux/slices/jobsSlice";
-import HeroSearch from "../components/Search/HeroSearch";
+import HeroSearch from "../components/search/HeroSearch";
 import JobsAndFilters from "../components/jobs/JobsAndFilters";
 
 export default function SearchPage() {

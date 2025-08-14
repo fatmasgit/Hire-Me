@@ -175,5 +175,9 @@
   "Search by title or skill...": "ابحث بالمسمى الوظيفي أو المهارة...",
   "title: flutter developer": "المسمى: مطور flutter",
   "skill: react": "المهارة: React",
-  "skill: next": "المهارة: Next"
+  "skill: next": "المهارة: Next",
+  "Job Details": "تفاصيل الوظيفة",
+  "Company Details": "تفاصيل الشركة",
+  "Apply Now": "قدّم الآن",
+  "View Company": "عرض الشركة"
 }

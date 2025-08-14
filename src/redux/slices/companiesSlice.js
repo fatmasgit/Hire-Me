@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs, getDoc, doc, query, where } from "firebase/firestore";
-import { db } from "../../Firebase/firebaseConfig";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
 
 const companiesCollection = collection(db, "companies");
 const jobsCollection = collection(db, "jobs");
@@ -11,18 +18,17 @@ export const fetchCompanies = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const querySnapshot = await getDocs(companiesCollection);
-      const companies = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const companies = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       //  console.log('cmpanies')
       return companies;
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
-
-
-
-
 
 // Async thunk to fetch jobs for a specific company
 export const fetchCompanyJobs = createAsyncThunk(
@@ -40,17 +46,17 @@ export const fetchCompanyJobs = createAsyncThunk(
       // Fetch jobs from Firestore if not cached
       const q = query(jobsCollection, where("companyName", "==", companyName));
       const querySnapshot = await getDocs(q);
-      const jobs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const jobs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       return { companyName, jobs: jobs.length > 0 ? jobs : [] }; // Ensure empty array if no jobs are found
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
-
-
-
 
 // Async thunk to fetch a single company by its ID
 export const fetchCompanyById = createAsyncThunk(
@@ -69,11 +75,8 @@ export const fetchCompanyById = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
-
-
-
 
 // Slice
 const companiesSlice = createSlice({
@@ -128,7 +131,6 @@ const companiesSlice = createSlice({
         state.jobsError = action.payload;
       })
 
-
       // Fetch a single company by its ID
       .addCase(fetchCompanyById.pending, (state) => {
         state.loadingSingleCompany = true;
@@ -142,8 +144,6 @@ const companiesSlice = createSlice({
         state.loadingSingleCompany = false;
         state.singleCompanyError = action.payload;
       });
-
-
   },
 });
 

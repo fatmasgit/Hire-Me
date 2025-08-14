@@ -1,6 +1,6 @@
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import HeroForm from "../Home/HeroForm";
+import HeroForm from "../home/HeroForm";
 import { useTranslation } from "react-i18next";
 
 export default function HeroSearch() {

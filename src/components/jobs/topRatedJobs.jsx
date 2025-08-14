@@ -2,9 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaLaptopCode } from "react-icons/fa";
 import { SlLocationPin } from "react-icons/sl";
+import { Link } from "react-router-dom";
 
 export default function TopRatedJobs({ job }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div
@@ -75,9 +76,15 @@ export default function TopRatedJobs({ job }) {
       <p className="mb-1 font-PoppinsSemiBold text-[#444444] xs:text-base  ">
         {job?.salaryRange?.min} - {job?.salaryRange?.max}
       </p>
-      <button className="mx-auto my-1 h-9 w-11/12 rounded-md border-[1px] border-[#3B235D] bg-white font-PoppinsMedium text-base  text-[#3B235D]">
-        Apply Now
-      </button>
+
+      <Link
+        to={`/jobs/${job?.id}/${job?.jobTitle.replace(/\s+/g, "_")}`}
+        className="w-11/12  mx-auto my-1 h-9  !no-underline"
+      >
+        <button className=" w-full h-full  rounded-md border-[1px] border-[#3B235D] bg-white font-PoppinsMedium  rtl:font-TajawalBold text-base  text-[#3B235D]">
+          {t("Apply Now")}
+        </button>
+      </Link>
     </div>
   );
 }

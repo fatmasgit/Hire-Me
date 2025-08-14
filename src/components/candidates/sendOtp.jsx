@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { Navigate, useNavigate } from "react-router-dom";
 
-const OTPRequestComponent = () => {
+const SendOtp = () => {
   const [account, setAccount] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate()
@@ -57,4 +57,4 @@ const OTPRequestComponent = () => {
   );
 };
 
-export default OTPRequestComponent;
+export default SendOtp;

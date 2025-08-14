@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        Hero: "url('./components/Home/work.jpg')",
+        Hero: "url('./components/home/work.jpg')",
         overlay:
           "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.5) 100%);",
         employers: "url('./components/forEmployers/employers.jpg')",

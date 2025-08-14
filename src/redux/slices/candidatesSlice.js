@@ -8,8 +8,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { supabase } from "../../SuperBase/SuperBaseConfig";
-import { auth, db } from "../../Firebase/firebaseConfig";
+import { supabase } from "../../superBase/superBaseConfig";
+import { auth, db } from "../../firebase/firebaseConfig";
 
 // Signup with Google account linking
 export const signupCandidate = createAsyncThunk(

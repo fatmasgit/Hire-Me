@@ -174,5 +174,9 @@
   "Search by title or skill...": "Search by title or skill...",
   "title: flutter developer": "title: flutter developer",
   "skill: react": "skill: react",
-  "skill: next": "skill: next"
+  "skill: next": "skill: next",
+  "Job Details": "Job Details",
+  "Company Details": "Company Details",
+  "Apply Now": "Apply Now",
+  "View Company": "View Company"
 }

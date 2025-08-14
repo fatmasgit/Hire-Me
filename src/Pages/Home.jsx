@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import JobsCarousel from "../components/Home/JobsCarousel";
-import HeroSection from "../components/Home/HeroSection";
-import Categories from "../components/Home/Categories";
-import HeroCards from "../components/Home/HeroCards";
-import CampaniesCarousel from "../components/Home/companiesCarousel";
+import JobsCarousel from "../components/home/JobsCarousel";
+import HeroSection from "../components/home/HeroSection";
+import Categories from "../components/home/Categories";
+import HeroCards from "../components/home/HeroCards";
+import CampaniesCarousel from "../components/home/CompaniesCarousel";
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useTranslation } from "react-i18next";
 
-export default function Home() {
+export default function HomePage() {
   const { i18n } = useTranslation();
   const isRTL = i18n.dir() === "rtl";
 

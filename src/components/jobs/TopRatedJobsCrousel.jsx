@@ -4,10 +4,10 @@ import { EffectCube, Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cube";
 import "swiper/css/pagination";
-import TopRatedJobs from "./topRatedJobs";
+import TopRatedJobs from "./TopRatedJobs";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchJobs, fetchAllJobs } from "../../redux/slices/jobsSlice";
+import { fetchAllJobs } from "../../redux/slices/jobsSlice";
 
 const TopRatedCarousel = ({ filter }) => {
   const { i18n } = useTranslation();

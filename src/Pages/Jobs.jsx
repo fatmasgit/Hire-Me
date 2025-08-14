@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
 import { fetchJobs } from "../redux/slices/jobsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import JobsAndFilters from "../components/jobs/JobsAndFilters";
 import { useTranslation } from "react-i18next";
 
-export default function RandomJobsPage() {
+export default function JobsPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { filters } = useSelector((state) => state.jobs);

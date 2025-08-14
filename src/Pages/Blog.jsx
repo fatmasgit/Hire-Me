@@ -1,7 +1,7 @@
 import React from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
-import BlogData from "../components/Blog/blogData";
+import BlogData from "../components/blog/BlogData";
 import { useTranslation } from "react-i18next";
 
 export default function BlogPage() {

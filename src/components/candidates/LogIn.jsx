@@ -6,7 +6,7 @@ import { loginCandidate, loginWithGoogle } from "../../redux/slices/candidatesSl
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LangButton from "../nav/arEnButton";
+import LangButton from "../nav/ArEnButton";
 import { FcGoogle } from "react-icons/fc";
 
 export default function LogIn() {

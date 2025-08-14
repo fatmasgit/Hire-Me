@@ -16,8 +16,8 @@ import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import JobDescription from './jobDescription';
-import JobRequirements from './jobRequirements';
+import JobDescription from './JobDescription';
+import JobRequirements from './JobRequirements';
 import JobTextFields from './JobTextFields';
 
 const validationSchema = Yup.object({

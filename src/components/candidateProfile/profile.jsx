@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../Firebase/firebaseConfig";
+import { auth } from "../../firebase/firebaseConfig";
 import { fetchCandidateByUid, updateProfile } from "../../redux/slices/profileSlice";
-import LangButton from "../nav/arEnButton";
+import LangButton from "../nav/ArEnButton";
 import { Link } from "react-router-dom";
-import CandidateForm from "../Shared/CandidateForm";
+import CandidateForm from "../shared/CandidateForm";
 
 export default function Profile() {
   const { t } = useTranslation();

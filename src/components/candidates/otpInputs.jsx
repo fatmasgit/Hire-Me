@@ -1,26 +1,26 @@
 import React, { useState, useRef } from "react";
 
 const OTPInput = ({ length = 6 }) => {
-  const [otp, setOtp] = useState(new Array(length).fill("")); 
+  const [otp, setOtp] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 
 
   const handleChange = (element, index) => {
     const value = element.value;
-    if (isNaN(value)) return; 
+    if (isNaN(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
 
-  
+
     if (value && index < length - 1) {
       inputRefs.current[index + 1].focus();
     }
 
 
     if (newOtp.every((digit) => digit !== "")) {
-   
+
     }
   };
 

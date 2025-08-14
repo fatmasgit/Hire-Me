@@ -1,9 +1,11 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { SlLocationPin } from "react-icons/sl";
+import { useTranslation } from "react-i18next";
 
 export default function JobCard({ job }) {
   const params = useParams();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="border flex w-full rounded-lg bg-gray-200 px-1">
@@ -91,8 +93,8 @@ export default function JobCard({ job }) {
             className="w-fit xs:self-end"
           >
             {!params.title && (
-              <button className="mx-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium text-[#3B235D] xs:mt-3 xs:h-8 xs:w-40 xs:text-xs md:h-9 md:w-48 sm:text-sm lg:mt-0">
-                Applay Now
+              <button className="mx-2 w-full rounded-md border-[1px] border-solid border-[#3B235D] bg-white font-PoppinsMedium rtl:font-TajawalBold text-[#3B235D] xs:mt-3 xs:h-8 xs:w-40 xs:text-xs md:h-9 md:w-48 sm:text-sm lg:mt-0">
+                {t("Apply Now")}
               </button>
             )}
           </Link>

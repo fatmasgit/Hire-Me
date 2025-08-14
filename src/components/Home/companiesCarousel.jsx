@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import Company from "./companiesCarouselCard";
+import Company from "./CompaniesCarouselCard";
 import {
   fetchCompanies,
   fetchCompanyJobs,
@@ -56,10 +56,10 @@ export default function CompaniesCarousel() {
 
   return (
     <div className="w-full bg-[#FAFAFA] py-12 text-center">
-      <p className="!mb-0 text-center font-PoppinsSemiBold text-base text-black md:text-lg">
+      <p className="!mb-0 text-center font-PoppinsSemiBold rtl:font-TajawalBold text-base text-black md:text-lg">
         {t("TOP EMPLOYERS")}
       </p>
-      <p className="mx-auto !mt-0 mb-4 w-4/5 max-w-screen-md font-PoppinsRegular text-sm text-black md:text-base">
+      <p className="mx-auto !mt-0 mb-4 w-4/5 max-w-screen-md font-PoppinsRegular rtl:font-TajawalRegular text-sm text-black md:text-base">
         {t("Recommend top employers")}
       </p>
 

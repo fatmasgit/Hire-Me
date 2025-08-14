@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import HeroBackGround from "../components/HeroBackGround";
+import HeroBackGround from "../components/shared/HeroBackGround";
 import { IoIosArrowForward } from "react-icons/io";
 import CompaniesSection from "../components/companies/CompaniesSection";
 import { useTranslation } from "react-i18next";
 
-export default function JobDetailsPage() {
+export default function CompaniesPage() {
   const { t, i18n } = useTranslation();
 
   return (

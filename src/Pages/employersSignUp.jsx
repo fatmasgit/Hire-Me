@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import SignupForm from '../components/forEmployers/signUp'
-import LangButton from "../components/nav/arEnButton";
+import SignupForm from '../components/forEmployers/SignUp'
+import LangButton from "../components/nav/ArEnButton";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 
 
-const EmployersSignupForm = () => {
+const EmployersSignupPage = () => {
     const { i18n, t } = useTranslation();
 
     return (
@@ -58,6 +58,6 @@ const EmployersSignupForm = () => {
     );
 };
 
-export default EmployersSignupForm;
+export default EmployersSignupPage;
 
 

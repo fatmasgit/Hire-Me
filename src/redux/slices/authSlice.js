@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { auth, db } from '../../Firebase/firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { auth, db } from "../../firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 // Async thunk to check authentication and fetch Firestore data
 export const fetchUserData = createAsyncThunk(
-  'auth/fetchUserData',
+  "auth/fetchUserData",
   async (_, { rejectWithValue }) => {
     try {
       const user = auth.currentUser;
@@ -14,27 +14,27 @@ export const fetchUserData = createAsyncThunk(
         const displayName = user.displayName || null;
 
         // Check if user is an employer
-        const employerDocRef = doc(db, 'employers', uid);
+        const employerDocRef = doc(db, "employers", uid);
         const employerDocSnap = await getDoc(employerDocRef);
 
         if (employerDocSnap.exists()) {
           return {
             authenticated: true,
             userDocument: employerDocSnap.data(),
-            role: 'employer',
+            role: "employer",
             displayName,
           };
         }
 
         // Check if user is a candidate
-        const candidateDocRef = doc(db, 'candidates', uid);
+        const candidateDocRef = doc(db, "candidates", uid);
         const candidateDocSnap = await getDoc(candidateDocRef);
 
         if (candidateDocSnap.exists()) {
           return {
             authenticated: true,
             userDocument: candidateDocSnap.data(),
-            role: 'candidate',
+            role: "candidate",
             displayName,
           };
         }
@@ -49,16 +49,21 @@ export const fetchUserData = createAsyncThunk(
       }
 
       // No logged-in user
-      return { authenticated: false, userDocument: null, role: null, displayName: null };
+      return {
+        authenticated: false,
+        userDocument: null,
+        role: null,
+        displayName: null,
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Async thunk to log out the user
 export const logout = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
       await auth.signOut(); // Firebase sign-out
@@ -66,17 +71,17 @@ export const logout = createAsyncThunk(
         authenticated: false,
         userDocument: null,
         role: null,
-        displayName: null
+        displayName: null,
       };
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Auth slice
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     authenticated: false,
     userDocument: null,
